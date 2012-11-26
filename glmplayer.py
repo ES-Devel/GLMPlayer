@@ -1,10 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import wx
-import util
-import application
-from ctypes import *
-import sys
+from modules import application, util
 
 '''main app'''
 def main():
