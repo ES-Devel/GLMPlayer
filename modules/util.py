@@ -1,13 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
+"""Copyright (c) 2012 - EsDevel team
+   Distributed under GLP License"""
+
 import wx
-'''Def Window'''
+"""Get window instance"""
 class Window(wx.Frame):
 	def __init__(self,parent,*args,**kwargs):
 		super(Window,self).__init__(parent,*args,**kwargs)
 	def OnQuit(self, event):
 		self.Close()
-'''GLMPlayer MenuBar'''
+"""create MenuBar """
 def extMenuBar(APP_EXIT):
 	MenuBar = wx.MenuBar()
 	MenuBar.SetBackgroundColour('#d3d3d3')
@@ -18,6 +22,7 @@ def extMenuBar(APP_EXIT):
 	fileMenu.AppendItem(Quit)
 	MenuBar.Append(fileMenu,'&File')
 	return MenuBar
+"""create ToolBar"""
 def Toolbar(window):
 	toolbar = window.CreateToolBar()
 	btns = []

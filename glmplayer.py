@@ -1,14 +1,21 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import wx
-from modules import application, util
 
-'''main app'''
+"""Copyright (c) 2012 - EsDevel team
+   main application, runs window
+   contact to: william.parras.mendez@gmail.com
+   Distributed under GLP License"""
+
+import wx
+from modules import *
+
+__package__="glmplayer-0.1"
+
+"""main app throws main Loop"""
 def main():
 	application.GLMPlayer = wx.App()
 	application.main = util.Window(None)
 	application.main.SetTitle("GLMPlayer")
-	application.main.SetBackgroundColour( wx.Colour( 0, 0, 0))
 	application.main.SetMenuBar(util.extMenuBar(application.APP_EXIT))
 	util.Toolbar(application.main)
 	application.main.Show()
