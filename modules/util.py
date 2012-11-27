@@ -1,59 +1,102 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """Copyright (c) 2012 - EsDevel team
-   Distributed under GLP License"""
+   License: GPL"""
 
 import wx
+import tools
+import controls
+import sys
 
-"""Shortcut icons"""
-def shorcut():
-	return 'icons/'
+ToolsGenerator = tools.generator()
+"""Tool object"""
 
-"""Get window instance"""
+imgPath = 'icons/' 
+"""Easy way to change icons directory"""
+
 class Window(wx.Frame):
+	"""return window instance"""
 	def __init__(self,parent,*args,**kwargs):
 		super(Window,self).__init__(parent,*args,**kwargs)
+		
+  		# Boxes
+		hbox = wx.BoxSizer(wx.HORIZONTAL)
+		vbox = wx.BoxSizer(wx.VERTICAL)
+		hbox2 = wx.BoxSizer(wx.HORIZONTAL)
+
+		# Panel
+		self.panel = wx.Panel(self, -1)
+		
+		# PlayBar indic
+		self.rep = controls.repControl(self.panel)
+		
+		# MediaList
+		self.list = controls.AutoWidthListCtrl(self.panel)
+		ToolsGenerator.MediaHeaders(self.list,('Artist',140),\
+		('Album',140),('Duration',140))	
+		
+		# StatusBar	
+		self.CreateStatusBar()
+	
+		# Setting position for items in window
+		hbox.Add(self.list, 1, wx.EXPAND,border=0)
+		hbox2.Add(self.rep,1,border=0)
+		vbox.Add(hbox2,1, wx.EXPAND,border=0)
+		vbox.Add(hbox,1, wx.EXPAND,border=0)
+        	self.panel.SetSizer(vbox)
+		self.Centre()
+
 	def OnQuit(self, event):
 		self.Close()
-"""create MenuBar """
+
 def extMenuBar(APP_EXIT):
+	"""return menu instance"""
+
+	#Create MenuBar
 	MenuBar = wx.MenuBar()
 	MenuBar.SetBackgroundColour('#d3d3d3')
-	fileMenu = wx.Menu()
-	Quit = wx.MenuItem(fileMenu, APP_EXIT, '&Quit\tctrl+q')
-	fileMenu.Append(wx.ID_NEW,'&Add\tctrl+a')
-	fileMenu.AppendSeparator()
-	fileMenu.AppendItem(Quit)
-	MenuBar.Append(fileMenu,'&File')
-	return MenuBar
-"""create img Path's for each button"""
-imgPath = shorcut()
-lb = ('Play','Stop','Next','Prev','Paus')
-img = {lb[0]:'play.png',lb[1]:'cancel.png',lb[2]:'right.png',lb[3]:'left.png',lb[4]:'pause.png'}
-lb2 = ('Tweet','About','Add','Delete')
-img2 = {lb2[0]:'tweet.png',lb2[1]:'about.png',lb2[2]:'add.png',lb2[3]:'delete.png'}
-"""create ToolBar"""
-def Toolbar(window):
-	"""ToolBar instance"""
-	toolbar = window.CreateToolBar()
-	"""Play controller"""
-	btns = []
-	"""tools on ToolBar"""
-	tools = []
-	"""Reference for each button in order"""
-	ref = {}
-	for i in range(0,4):
-		btns.append((lb[i],imgPath+img[lb[i]]))
-	for i in range(0,3):
-		tools.append((lb2[i],imgPath+img2[lb2[i]]))
-	for bt in btns:
-		btn = toolbar.AddLabelTool(wx.ID_ANY,bt[0],wx.Bitmap(bt[1]))
-		ref[bt[0]]= btn
-	sep = toolbar.AddSeparator()
-	for bt in tools:
-		btn = toolbar.AddLabelTool(wx.ID_ANY,bt[0],wx.Bitmap(bt[1]))
-		ref[bt[0]]= btn
-	delete_btn = toolbar.AddLabelTool(wx.ID_ANY,"Delete",wx.Bitmap(imgPath+"delete.png"))
-	toolbar.Realize()
 	
+	# Create MenuEntry	
+	File = wx.Menu()
+	Help = wx.Menu()
+	
+	# Add entry to MenuEntry File
+	Quit = wx.MenuItem(File, APP_EXIT, '&Quit\tctrl+q')
+	File.Append(wx.ID_NEW,'&Add\tctrl+a')
+	File.AppendSeparator()
+	File.AppendItem(Quit)
+	
+	# Add entry to MenuEntry Help
+        Help.Append(200, '&About')
+	
+	# Add menuEntry to MenuBar
+	MenuBar.Append(File,'&File')
+	MenuBar.Append(Help, '&Help')
+	
+	# Return MenuBar instance
+	return MenuBar 
+
+def Toolbar(window):
+	"""add TooBar on target window"""
+	
+	items = ('cancel','right','left',1,'tweet','about','add','delete',1) 
+	btn_dic= ToolsGenerator.uiMenuBtn('.png',imgPath,items)
+
+	toolbar = window.CreateToolBar()
+
+	ref = {}
+	ref = ToolsGenerator.getReference(toolbar,imgPath,items,btn_dic)
+	"""Get reference for objects on toolbar"""
+
+        artwork = ToolsGenerator.Thumb(imgPath+'cd.png')
+ 
+        artwork_btn = wx.BitmapButton(toolbar, id=-1, bitmap=artwork,pos=(10, 20),\
+	size = (artwork.GetWidth()+10, artwork.GetHeight()+10))
+	
+	repLabel = wx.StaticText(toolbar,id=-1,label="   No se reproduce nada",size=wx.Size(200,10))
+	ToolsGenerator.SetBold(repLabel)
+	ToolsGenerator.AddGenericControl(toolbar,artwork_btn,repLabel)
+
+	
+

@@ -1,11 +1,14 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """Copyright (c) 2012 - EsDevel team
    Distributed under GLP License"""
 
-'''Main Obj'''
 GLMPlayer = None
+"""Main Obj"""
+
 main = None
-'''MarkUp Controller - End app'''
+"""main instance"""
+
 APP_EXIT = 1
+"""MarkUp Controller - End app"""
