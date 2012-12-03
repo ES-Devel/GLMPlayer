@@ -71,7 +71,7 @@ def on_tree_selection_changed(selection):
 def ObtenerLista(Limite,init):
 	numeros = []
 	numeros.append(init)
-	while len(numeros) < (Limite-1):
+	while len(numeros) < (Limite+1):
 		numero = random.randint(0, Limite)
 		if not numero in numeros:
 			numeros.append(numero)

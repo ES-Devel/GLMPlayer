@@ -1,23 +1,5 @@
 import random
 
-PATH = "interface/glmplayer.glade"
-
-TRACK = "config/track.xml"
-
-OAUTH = "config/OAuth.xml"
-
-icons = "interface/"
-
-# funcion para invertir una cadena de caracteres
-def reverse(list):
-	if len(list)==1:
-		return list
-	else:
-		return list[-1]+reverse(list[:-1])  
-# Fin de funcion para invertir una cadena
-
-
-
 # Funcion que se registra al cambio en la medialist por ende en el gtk.TreeWiev
 def on_tree_selection_changed(selection):
 	# Obtiene un Iterador
@@ -71,31 +53,14 @@ def on_tree_selection_changed(selection):
 def ObtenerLista(Limite,init):
 	numeros = []
 	numeros.append(init)
-	while len(numeros) < (Limite-1):
+	while len(numeros) < (Limite):
 		numero = random.randint(0, Limite)
 		if not numero in numeros:
 			numeros.append(numero)
 	return numeros
 
-def clearing(array):
-	palabra = ""
-	contador = 0
-	for letra in array:
-			if letra != "\n":
-				if letra == " " and contador == 0:
-						pass
-				else:	
-					palabra = palabra+letra
-					contador = contador+1
-	contador = 0
-	palabra = reverse(palabra)
-	nueva = ""
-	for letra in palabra:
-		if letra != "\n":
-			if letra == " " and contador == 0:
-				pass
-			else:	
-				nueva = nueva+letra
-				contador = contador+1			 
-	palabra = reverse(nueva)
-	return palabra 	
+def reverse(list):
+	if len(list)==1:
+		return list
+	else:
+		return list[-1]+reverse(list[:-1]) 
