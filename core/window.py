@@ -13,22 +13,31 @@ import gtk
 import resources
 
 class Glmplayer(object):
-	"""main window"""
+	"""Glmplayer class: window base"""
 
-	def __init__(self,parent):
-		"""init method
-		:return: None
-		"""
+	def __init__(self,parent,builder):
+		"""initial method: set initial
+		values
+		:param parent: window parent
+		:param builder: gtk.Builder
+		:return: None"""
 		self.__parent = parent
+		self.__instance = None
+		self.__builder = builder
 
 	def Set(self):
+		"""Set Method: set builder
+		:return: None"""
 		self.__builder = gtk.Builder()
 		self.__builder.add_from_file(resources.ui())
 
-	def Start(self):
-		"""conect window child
-		:return: None
-		:param parent: main obj"""
+
+	def Start(self,name):
+		"""Start method: build window
+		:param name: window name to be created
+		:return: None"""
+		self.instance(self.getBuilder().get_object(name))
+		# get gtk.Widow Instance, then get window objects
 		self.__parent.tree = self.__builder.get_object("arbol_pistas")
         	self.__parent.medialist = self.__builder.get_object("media")
         	self.__parent.sel = self.__builder.get_object("selec")
@@ -45,8 +54,43 @@ class Glmplayer(object):
         	self.__parent.stock_album = self.__builder.get_object("stock_album")
 
 	def getBuilder(self):
-		""":return gtk.Builder:"""
+		"""getBuilder method: get window builder
+		:return: gtk.Builder"""
 		return self.__builder
 
 	def getParent(self):
+		"""getParent method: get parent class
+		:return: extended object class"""
 		return self.__parent
+
+	def getInstance(self):
+		"""getInstance method: get window instance
+		:return: gtk.Window"""
+		return self.__instance
+
+	def Show(self,widget):
+		"""Show method: event method
+		:return: None"""
+		self.getInstance().show()
+
+	def Show_(self):
+		"""Show_ method: the same as Show,
+		but this is called manually
+		:return: None"""
+		self.getInstance().show()
+	
+	def Hide(self,widget):
+		"""Hide method: event method
+		:return: None"""
+		self.getInstance().hide()
+
+	def Hide_(self):
+		"""Hide_ method: the same as Hide,
+		but this is called manually
+		:return: None"""
+		self.getInstance().hide()
+	
+	def instance(self,instance):
+		"""instance method: set instance
+		:return: None"""
+		self.__instance = instance 

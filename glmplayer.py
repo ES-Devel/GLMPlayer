@@ -1,33 +1,47 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""Main program
+:author: william parras
+:organization: EsDevel Team
+:contact: william.parras.mendez@gmail.com
+:version: 0.1
+:status: testing
+:license: GPL"""
 
 import gtk
-import os
-import random
 import gst
 import subprocess
-import eyeD3
-import mutagen
 from plugins import playbin
-
 from core import window,importWindow,about,edit,mediaList,resources
 
 class main:
-	"""main class"""
+	"""main class: runs program"""
+
 	def __init__(self):
-		
-		self.__window = window.Glmplayer(self)  
+		"""start runing all windows
+		:return: None"""
+		# main window
+		self.__window = window.Glmplayer(self,None)  
 		self.__window.Set( )   		
-		self.__window.Start( )	
+		self.__window.Start("ventana_principal")
+		# import, about, edit windows
 		self.importFiles = importWindow.importWindow(self.__window.getBuilder(),self)
         	self.about = about.aboutWindow(self.__window.getBuilder(),self)
        		self.edit = edit.editWindow(self.__window.getBuilder(),self)
-		self.importFiles.Start()
-		self.about.Start()
-		self.edit.Start()
-		self.gst_builder = playbin.Stream(self)		
+		# set windows by Name
+		self.importFiles.Start("Add")
+		self.about.Start("About")
+		self.edit.Start("edit")
+		# gstreamer builder object
+		self.gst_builder = playbin.Stream(self)
+		# info Label: shows current status		
         	self.info.set_text("No se ha reproducido nada aun")
+		# creates mediaList to store media data
 		self.PlayList = mediaList.MediaList(self)
+		# search for songs
 		self.PlayList.Search()	
+		
         	self.time_song = 0
         	self.imagen.set_from_file(resources.uiPath()+"NOCD.png")
         	self.MAPA = [] 
@@ -54,13 +68,9 @@ class main:
 		"on_cancel_edit_clicked":self.edit.stop_edicion,
 		"on_ok_edit_clicked":self.edit.save
 		}
-		"""eventHandlers"""
-		
         	self.__window.getBuilder().connect_signals(dict)
-		"""connect signals"""
 
 	def cb_master_slider_change(self, widget,event,data=None):
-		"""change master volume"""
 		try:
 			val = widget.get_value()
 			proc = subprocess.Popen('/usr/bin/amixer sset Master ' +\
@@ -70,32 +80,26 @@ class main:
 			pass
 	
 	def destroy(self,widget):
-		"""Close main program"""
 		gtk.main_quit()
 		self.hilo.stop()
 
 	def play(self,widget):
-		"""start playing"""
 		self.gst_builder.play_state()
 	
 	def pause(self,widget):
-		"""pause song"""
 		self.player.set_state(gst.STATE_PAUSED)
 		self.info.set_text(" Se ha pausado la reproduccion")
 		self.state,self.dur = self.hilo.pause()	
 		self.controler = 1
 		
 	def prev(self,widget):
-		"""return to previous song"""
 		self.gst_builder.prev_state()
 		
 	
 	def next(self,widget):
-		"""got to next song"""
 		self.gst_builder.next_state()
 
 	def stop(self,widget):
-		"""stop playing, this may erase map playing"""
 		self.gst_builder.stop_state()	
 
 if __name__ == "__main__":

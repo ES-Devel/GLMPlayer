@@ -20,33 +20,47 @@ filepattern = (("MP3","*.mp3"),)
 """Sopported formats"""
 
 class importWindow(window.Glmplayer):
+	"""importWindow class: based on GlmPlayer class
+	creates an openDialog window"""
 
 	def __init__(self,builder,parent):
-		window.Glmplayer.__init__(self,parent)
-		self.__builder = builder
-		self.__instance = None	
+		"""initial method: set initial
+		values
+		:param parent: window parent
+		:param builder: gtk.Builder
+		:return: None"""
+		window.Glmplayer.__init__(self,parent,builder)
+		# Base initial Method	
 		self.filtro = gtk.FileFilter()
+		# add gtk.Filter
 
-	def Start(self):
-		self.__instance = self.__builder.get_object("Add")
+	def Start(self,name):
+		"""Start method: build window (overload)
+		:param name: window name to be created
+		:return: None"""
+		self.instance(self.getBuilder().get_object(name))
 
 	def Set(self):
+		"""Set Method: (overload)
+		:return: None"""
 		pass
 	
 	def OpenDialog(self,widget):
-		"""Add files to playlist"""
+		"""OpenDialog method: load anf write audio 
+		files
+		:return None:"""
 		pattern = (".mp3") 	
 		self.filtro.set_name("*.mp3")
 		for name, pattern in filepattern:
  			self.filtro.add_pattern(pattern)         	
-		self.__instance.add_filter(self.filtro)
-		respt=self.__instance.run()
-		self.__instance.remove_filter(self.filtro)
-		self.__instance.hide()
+		self.getInstance().add_filter(self.filtro)
+		respt=self.getInstance().run()
+		self.getInstance().remove_filter(self.filtro)
+		self.Hide()
 		dom = minidom.parse(resources.ConfigFiles()+"track.xml")
 		wml = dom.getElementsByTagName('wml')
 		if respt == -5:
-			fileselected = self.__instance.get_filenames()
+			fileselected = window.Glmplayer.getInstance().get_filenames()
 			for files in fileselected:
 				(dirs,files)= os.path.split(files)
 				self.getParent().medialist.append([files,dirs])
@@ -63,5 +77,6 @@ class importWindow(window.Glmplayer):
 			xmldocument = open(resources.ConfigFiles()+"track.xml","w")
 			dom.writexml(xmldocument)
 			xmldocument.close()
+
 
 	

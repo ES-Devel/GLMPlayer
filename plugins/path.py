@@ -1,12 +1,6 @@
 import random
 
-PATH = "interface/glmplayer.glade"
-
-TRACK = "config/track.xml"
-
-OAUTH = "config/OAuth.xml"
-
-icons = "interface/"
+icons = "ui/"
 
 # funcion para invertir una cadena de caracteres
 def reverse(list):

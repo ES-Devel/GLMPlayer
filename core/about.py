@@ -13,22 +13,27 @@ import gtk
 import window
 
 class aboutWindow(window.Glmplayer):
+	"""aboutWindow class: based on GlmPlayer class
+	creates about dialog"""
+
 	def __init__(self,builder,parent):
-		window.Glmplayer.__init__(self,parent)
-		self.__instance = None	
-		self.__builder = builder
+		"""initial method: set initial
+		values
+		:param parent: window parent
+		:param builder: gtk.Builder
+		:return: None"""
+		window.Glmplayer.__init__(self,parent,builder)
+		# Base initial Method
 	
-	def Start(self):
-		self.__instance =  self.__builder.get_object("about")
+	def Start(self,name):
+		"""Start method: build window (overload)
+		:param name: window name to be created
+		:return: None"""
+		self.instance(self.getBuilder().get_object(name))
 
 	def Set(self):
+		"""Set Method: (overload)
+		:return: None"""
 		pass
 	
-	def Show(self,widget):
-		"""show about window"""
-		self.__instance.show()
-	
-	def Hide(self,widget):
-		"""hide about window"""
-		self.__instance.hide()
 	

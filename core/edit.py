@@ -11,47 +11,63 @@
 
 import gtk 
 import window
+import resources
+import eyeD3
 
 class editWindow(window.Glmplayer):
+	"""editWindow class: based on GlmPlayer class
+	creates edit dialog"""
+
 	def __init__(self,builder,parent):
-		window.Glmplayer.__init__(self,parent)
-		self.__instance = None	
-		self.__builder = builder
+		"""initial method: set initial
+		values
+		:param parent: window parent
+		:param builder: gtk.Builder
+		:return: None"""
+		window.Glmplayer.__init__(self,parent,builder)
 	
-	def Start(self):
-		self.__instance =  self.__builder.get_object("edit")
+	def Start(self,name):
+		"""Start method: build window (overload)
+		:param name: window name to be created
+		:return: None"""
+		self.instance(self.getBuilder().get_object(name))
 
 	def Set(self):
+		"""Set Method: (overload)
+		:return: None"""
 		pass
 	
 	def edicion(self,widget):
-		"""edit meta data"""
+		"""edicion method: edit metadata
+		:return: None"""
 		try:
-			select = self.__parent.tree.get_selection()
-			filepath = path.on_tree_selection_changed(select)
+			select = self.getParent().tree.get_selection()
+			filepath = resources.on_tree_selection_changed(select)
 			tag = eyeD3.Tag()
 			tag.link(filepath)
 			self.getParent().stock_album.set_text(tag.getAlbum())
 			self.getParent().stock_interp.set_text(tag.getArtist())
 			self.getParent().stock_titulo.set_text(tag.getTitle())
-			self.__instance.show()
+			self.Show_()
 		except:
 			pass
 
 	def stop_edicion(self,widget):
-		"""hide editor"""
-		self.__instance.hide()
+		"""stop_edicion method: hide editor
+		:return: None"""
+		self.Hide_()
 
 	def save(self,widget):
-		"""save changes to meta data"""
-		select = self.__parent.tree.get_selection()
-		filepath = path.on_tree_selection_changed(select)
+		"""save method: save changes to meta data
+		:return: None"""
+		select = self.getParent().tree.get_selection()
+		filepath = resources.on_tree_selection_changed(select)
 		tag = eyeD3.Tag()
 		tag.link(filepath)
 		tag.setAlbum(self.getParent().stock_album.get_text())
 		tag.setArtist(self.getParent().stock_interp.get_text())
 		tag.setTitle(self.getParent().stock_titulo.get_text())
 		tag.update()
-		self.__instance.hide()
+		self.Hide_()
 
 	
