@@ -10,11 +10,11 @@
 :license: GPL"""
 
 import gtk 
-import window
+import WindowBase
 import resources
 import eyeD3
 
-class editWindow(window.Glmplayer):
+class editWindow(WindowBase.window):
 	"""editWindow class: based on GlmPlayer class
 	creates edit dialog"""
 
@@ -24,18 +24,7 @@ class editWindow(window.Glmplayer):
 		:param parent: window parent
 		:param builder: gtk.Builder
 		:return: None"""
-		window.Glmplayer.__init__(self,parent,builder)
-	
-	def Start(self,name):
-		"""Start method: build window (overload)
-		:param name: window name to be created
-		:return: None"""
-		self.instance(self.getBuilder().get_object(name))
-
-	def Set(self):
-		"""Set Method: (overload)
-		:return: None"""
-		pass
+		WindowBase.window.__init__(self,parent,builder)
 	
 	def edicion(self,widget):
 		"""edicion method: edit metadata
@@ -69,5 +58,3 @@ class editWindow(window.Glmplayer):
 		tag.setTitle(self.getParent().stock_titulo.get_text())
 		tag.update()
 		self.Hide_()
-
-	

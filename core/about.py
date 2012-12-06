@@ -10,9 +10,9 @@
 :license: GPL"""
 
 import gtk 
-import window
+import WindowBase
 
-class aboutWindow(window.Glmplayer):
+class aboutWindow(WindowBase.window):
 	"""aboutWindow class: based on GlmPlayer class
 	creates about dialog"""
 
@@ -22,18 +22,5 @@ class aboutWindow(window.Glmplayer):
 		:param parent: window parent
 		:param builder: gtk.Builder
 		:return: None"""
-		window.Glmplayer.__init__(self,parent,builder)
+		WindowBase.window.__init__(self,parent,builder)
 		# Base initial Method
-	
-	def Start(self,name):
-		"""Start method: build window (overload)
-		:param name: window name to be created
-		:return: None"""
-		self.instance(self.getBuilder().get_object(name))
-
-	def Set(self):
-		"""Set Method: (overload)
-		:return: None"""
-		pass
-	
-	

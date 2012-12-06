@@ -39,7 +39,7 @@ class Stream():
 		duration = audio.info.length
 		times = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
 		tag.link(filepath)
-		self.__parent__.info.set_text(" Se ha iniciado la reproduccion ")
+		self.__parent__.info.push(self.__parent__.info.get_context_id("playing"),"Now playing")
 		self.__parent__.artista.set_text(tag.getArtist())
 		self.__parent__.album.set_text(tag.getAlbum())
 		self.__parent__.duracion.set_text("%.2f" % times + "  min")
@@ -58,6 +58,7 @@ class Stream():
 			self.__parent__.player.set_state(gst.STATE_NULL)
 			err, debug = message.parse_error()
 			print "Error: %s" % err, debug
+			self.info.push(self.__parent__.info.get_context_id("Error"),"Error: somethig went wrong")
                                                              
 	def on_sync_message(self, bus, message):
 		if message.structure is None:
@@ -73,8 +74,8 @@ class Stream():
 	def play_state(self):
 		if self.__parent__.controler == 1:
 			self.__parent__.player.set_state(gst.STATE_PLAYING)
-			self.__parent__.info.set_text(" Se ha iniciado la reproduccion ")
-			self.__parent__.hilo = RepThread(self.__parent__.dur,\
+			self.__parent__.info.push(self.__parent__.info.get_context_id("playing"),"Now playing")
+			self.__parent__.hilo = ThreadStream.RepThread(self.__parent__.dur,\
 			self.__parent__.progressBar,self.__parent__.state)
 			self.__parent__.hilo.start()
 			self.__parent__.controler = 0
@@ -128,5 +129,11 @@ class Stream():
 
 	def stop_state(self):	
 		self.__parent__.player.set_state(gst.STATE_NULL)
-		self.__parent__.info.set_text(" Se ha detenido la reproduccion")
+		self.__parent__.info.push(self.__parent__.info.get_context_id("Stop"),"Stop")
 		self.__parent__.hilo.stop()
+		
+	def pause_state(self):
+		self.__parent__.player.set_state(gst.STATE_PAUSED)
+		self.__parent__.info.push(self.__parent__.info.get_context_id("pause"),"Paused")
+		self.__parent__.state,self.__parent__.dur = self.__parent__.hilo.pause()	
+		self.__parent__.controler = 1
