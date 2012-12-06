@@ -36,33 +36,40 @@ class main:
 	def __init__(self):
 		"""start runing all windows
 		:return: None"""
+		self.Storage = "track.xml"
+		self.img = resources.uiPath()+"artwork.png"
+		self.Noimg = resources.uiPath()+"NOCD.png"
 		# main window
 		self.__builder = gtk.Builder()
 		self.__builder.add_from_file(resources.ui()) 
 		self.__window = window.Glmplayer(self,self.__builder)  
-		self.__window.Start("ventana_principal")
+		self.__objects = ("arbol_pistas","media","selec","caratula",\
+		"info","artista","album","titulo","duracion","volumen","bar",
+		"stock_interp","stock_titulo","stock_album")
+		self.__window.Start("ventana_principal",self.__objects)
 		# import, about, edit windows
-		self.importFiles = importWindow.importWindow(self.__builder,self)
+		self.importFiles = importWindow.importWindow(self.__builder,\
+		self,resources.ConfigFiles()+self.Storage)
 		self.about = about.aboutWindow(self.__builder,self)
-		self.edit = edit.editWindow(self.__builder,self)
+		self.edit = edit.editWindow(self.__builder,self,self.child["arbol_pistas"])
 		# set windows by Name
 		self.importFiles.Start("Add")
 		self.about.Start("About")
 		self.edit.Start("edit")
 		# gstreamer builder object
-		self.gst_builder = playbin.Stream(self)	
+		self.gst_builder = playbin.Stream(self,self.child["caratula"],self.child["bar"],\
+		self.child["arbol_pistas"],self.img,self.Noimg,self.child["info"],self.child["artista"],\
+		self.child["album"],self.child["duracion"],self.child["titulo"])	
 		# creates mediaList to store media data
-		self.PlayList = mediaList.MediaList(self)
+		self.PlayList = mediaList.MediaList(self,self.child["media"],\
+		self.child["arbol_pistas"],resources.ConfigFiles()+self.Storage)
 		# search for songs
 		self.PlayList.Search()	
 		
-		self.time_song = 0
-		self.imagen.set_from_file(resources.uiPath()+"NOCD.png")
-		self.MAPA = [] 
-		self.current = 0
-		self.controler = 0
-		self.max = 0
-		self.info.push(self.info.get_context_id("load done"),"Done")
+		
+		self.child["caratula"].set_from_file(resources.uiPath()+"NOCD.png")
+		
+		self.child["info"].push(self.child["info"].get_context_id("load done"),"Done")
 		
 		dict = {"on_agregar_activate": self.importFiles.OpenDialog,
 		"gtk_main_quit":self.destroy,
@@ -96,7 +103,7 @@ class main:
 	
 	def destroy(self,widget):
 		gtk.main_quit()
-		self.hilo.stop()
+		self.gst_builder.KILL()
 
 	def play(self,widget):
 		self.gst_builder.play_state()

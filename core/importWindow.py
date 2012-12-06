@@ -23,7 +23,7 @@ class importWindow(WindowBase.window):
 	"""importWindow class: based on GlmPlayer class
 	creates an openDialog window"""
 
-	def __init__(self,builder,parent):
+	def __init__(self,builder,parent,File):
 		"""initial method: set initial
 		values
 		:param parent: window parent
@@ -32,6 +32,7 @@ class importWindow(WindowBase.window):
 		WindowBase.window.__init__(self,parent,builder)
 		# Base initial Method	
 		self.filtro = gtk.FileFilter()
+		self.XML = File
 		# add gtk.Filter
 	
 	def OpenDialog(self,widget):
@@ -46,13 +47,13 @@ class importWindow(WindowBase.window):
 		respt=self.getInstance().run()
 		self.getInstance().remove_filter(self.filtro)
 		self.Hide_()
-		dom = minidom.parse(resources.ConfigFiles()+"track.xml")
+		dom = minidom.parse(self.XML)
 		wml = dom.getElementsByTagName('wml')
 		if respt == -5:
 			fileselected = self.getInstance().get_filenames()
 			for files in fileselected:
 				(dirs,files)= os.path.split(files)
-				self.getParent().medialist.append([files,dirs])
+				self.getParent().child["media"].append([files,dirs])
 				maincard = dom.createElement("pista")
 				wml[0].appendChild(maincard)
 				nm = dom.createElement("track")
@@ -63,7 +64,7 @@ class importWindow(WindowBase.window):
 				maincard.appendChild(dr)
 				paths = dom.createTextNode(dirs)
 				dr.appendChild(paths)
-			xmldocument = open(resources.ConfigFiles()+"track.xml","w")
+			xmldocument = open(self.XML,"w")
 			dom.writexml(xmldocument)
 			xmldocument.close()
 

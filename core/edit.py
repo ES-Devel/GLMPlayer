@@ -18,25 +18,26 @@ class editWindow(WindowBase.window):
 	"""editWindow class: based on GlmPlayer class
 	creates edit dialog"""
 
-	def __init__(self,builder,parent):
+	def __init__(self,builder,parent,MediaTree):
 		"""initial method: set initial
 		values
 		:param parent: window parent
 		:param builder: gtk.Builder
 		:return: None"""
 		WindowBase.window.__init__(self,parent,builder)
+		self.Tree = MediaTree
 	
 	def edicion(self,widget):
 		"""edicion method: edit metadata
 		:return: None"""
 		try:
-			select = self.getParent().tree.get_selection()
+			select = self.Tree.get_selection()
 			filepath = resources.on_tree_selection_changed(select)
 			tag = eyeD3.Tag()
 			tag.link(filepath)
-			self.getParent().stock_album.set_text(tag.getAlbum())
-			self.getParent().stock_interp.set_text(tag.getArtist())
-			self.getParent().stock_titulo.set_text(tag.getTitle())
+			self.getParent().child["stock_album"].set_text(tag.getAlbum())
+			self.getParent().child["stock_interp"].set_text(tag.getArtist())
+			self.getParent().child["stock_titulo"].set_text(tag.getTitle())
 			self.Show_()
 		except:
 			pass
@@ -49,12 +50,12 @@ class editWindow(WindowBase.window):
 	def save(self,widget):
 		"""save method: save changes to meta data
 		:return: None"""
-		select = self.getParent().tree.get_selection()
+		select = self.Tree.get_selection()
 		filepath = resources.on_tree_selection_changed(select)
 		tag = eyeD3.Tag()
 		tag.link(filepath)
-		tag.setAlbum(self.getParent().stock_album.get_text())
-		tag.setArtist(self.getParent().stock_interp.get_text())
-		tag.setTitle(self.getParent().stock_titulo.get_text())
+		tag.setAlbum(self.getParent().child["stock_album"].get_text())
+		tag.setArtist(self.getParent().child["stock_interp"].get_text())
+		tag.setTitle(self.getParent().child["stock_titulo"].get_text())
 		tag.update()
 		self.Hide_()
