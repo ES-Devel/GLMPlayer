@@ -62,15 +62,6 @@ def on_tree_selection_changed(selection):
 		# Regresa la nueva palabra sin espacios raros, ahora la ruta ya es 100 por ciento valida
 		return palabra 	
 
-def ObtenerLista(Limite,init):
-	numeros = []
-	numeros.append(init)
-	while len(numeros) < (Limite+1):
-		numero = random.randint(0, Limite)
-		if not numero in numeros:
-			numeros.append(numero)
-	return numeros
-
 def clearing(array):
 	palabra = ""
 	contador = 0

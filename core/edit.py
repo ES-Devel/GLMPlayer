@@ -9,7 +9,7 @@
 :status: testing
 :license: GPL"""
 
-import gtk 
+from gi.repository import Gtk, GObject
 import WindowBase
 import resources
 import eyeD3
@@ -22,7 +22,7 @@ class editWindow(WindowBase.window):
 		"""initial method: set initial
 		values
 		:param parent: window parent
-		:param builder: gtk.Builder
+		:param builder: Gtk.Builder
 		:return: None"""
 		WindowBase.window.__init__(self,parent,builder)
 		self.Tree = MediaTree

@@ -9,7 +9,7 @@
 :status: testing
 :license: GPL"""
 
-import gtk 
+from gi.repository import Gtk, GObject
 import WindowBase
 from xml.dom.minidom import Document
 from xml.dom import minidom
@@ -27,13 +27,13 @@ class importWindow(WindowBase.window):
 		"""initial method: set initial
 		values
 		:param parent: window parent
-		:param builder: gtk.Builder
+		:param builder: Gtk.Builder
 		:return: None"""
 		WindowBase.window.__init__(self,parent,builder)
 		# Base initial Method	
-		self.filtro = gtk.FileFilter()
+		self.filtro = Gtk.FileFilter()
 		self.XML = File
-		# add gtk.Filter
+		# add Gtk.Filter
 	
 	def OpenDialog(self,widget):
 		"""OpenDialog method: load anf write audio 

@@ -1,14 +1,12 @@
 #!/usr/bin/env python
-
-import threading
 from threading import Thread
-import gobject
-gobject.threads_init()
 import time
+from gi.repository import GObject
+loop = GObject.MainLoop()
 
-class RepThread(threading.Thread):  
+class RepThread(Thread):  
     def __init__(self, duration,progressBar,curr):  
-        threading.Thread.__init__(self)  
+        Thread.__init__(self)  
         self.duration = duration
         self.curr = curr
         self.progressBar =  progressBar
@@ -27,6 +25,7 @@ class RepThread(threading.Thread):
       	self.flag = False
       	self.curr = 1
       	self.progressBar.set_value(0)
+      	loop.quit()
 
     def pause(self):
     	self.flag = False

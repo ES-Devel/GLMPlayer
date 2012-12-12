@@ -9,7 +9,7 @@
 :status: testing
 :license: GPL"""
 
-import gtk 
+from gi.repository import Gtk, GObject
 import WindowBase
 
 class aboutWindow(WindowBase.window):

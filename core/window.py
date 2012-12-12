@@ -9,7 +9,7 @@
 :status: testing
 :license: GPL"""
 
-import gtk
+from gi.repository import Gtk, GObject
 import resources
 import WindowBase
 
@@ -20,7 +20,7 @@ class Glmplayer(WindowBase.window):
 		"""initial method: set initial
 		values
 		:param parent: window parent
-		:param builder: gtk.Builder
+		:param builder: Gtk.Builder
 		:return: None"""
 		WindowBase.window.__init__(self,parent,builder)
 		
@@ -30,8 +30,12 @@ class Glmplayer(WindowBase.window):
 		:param objects: type -> tuple, objects in window
 		:return: None"""
 		self.instance(self.getBuilder().get_object(name))
-		# get gtk.Widow Instance, then get window objects
-		self.getParent().child = { }
+		# get Gtk.Widow Instance, then get window objects
+		child = { }
 		for item in objects:
-			self.getParent().child[item] = self.getBuilder().get_object(item)
+			child[item] = self.getBuilder().get_object(item)
+		context = child["herramientas"].get_style_context()
+		context.add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
+		return child
+		
 

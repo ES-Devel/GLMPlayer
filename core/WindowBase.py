@@ -9,7 +9,7 @@
 :status: testing
 :license: GPL"""
 
-import gtk
+from gi.repository import Gtk, GObject
 import resources
 
 class window(object):
@@ -19,7 +19,7 @@ class window(object):
 		"""initial method: set initial
 		values
 		:param parent: window parent
-		:param builder: gtk.Builder
+		:param builder: Gtk.Builder
 		:return: None"""
 		self.__parent = parent
 		self.__instance = None
@@ -33,7 +33,7 @@ class window(object):
 
 	def getBuilder(self):
 		"""getBuilder method: get window builder
-		:return: gtk.Builder"""
+		:return: Gtk.Builder"""
 		return self.__builder
 
 	def getParent(self):
@@ -43,7 +43,7 @@ class window(object):
 
 	def getInstance(self):
 		"""getInstance method: get window instance
-		:return: gtk.Window"""
+		:return: Gtk.Window"""
 		return self.__instance
 
 	def Show(self,widget):
