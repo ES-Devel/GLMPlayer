@@ -9,12 +9,14 @@
 :status: testing
 :license: GPL"""
 
-from gi.repository import Gtk, GObject
+from gi.repository import Gtk
 import WindowBase
 from xml.dom.minidom import Document
 from xml.dom import minidom
 import resources
 import os
+import eyeD3
+from mutagen.mp3 import MP3 
 
 filepattern = (("MP3","*.mp3"),) 
 """Sopported formats"""
@@ -36,6 +38,7 @@ class importWindow(WindowBase.window):
 		# add Gtk.Filter
 	
 	def OpenDialog(self,widget):
+		tag = eyeD3.Tag()
 		"""OpenDialog method: load anf write audio 
 		files
 		:return None:"""
@@ -53,7 +56,28 @@ class importWindow(WindowBase.window):
 			fileselected = self.getInstance().get_filenames()
 			for files in fileselected:
 				(dirs,files)= os.path.split(files)
-				self.getParent().child["media"].append([files,dirs])
+				nombre = files
+				ruta = dirs
+				tag.link(ruta+"/"+nombre)
+				audio = MP3(ruta+"/"+nombre)
+				titulo = ""
+				artista = ""
+				album = ""
+				if tag.getAlbum() != "" and tag.getAlbum() != " ":
+					album = tag.getAlbum() 
+				else:
+					album = "Desconocido"
+				if tag.getArtist() != "" and tag.getArtist() != " ":
+					artista = tag.getArtist()
+				else:
+					artista = "Desconocido"
+				if tag.getTitle() != "" and tag.getTitle() != " ":
+					titulo = tag.getTitle()
+				else:
+					titulo = nombre
+				duration = audio.info.length	
+				times = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
+				self.getParent().child["media"].append([titulo,album,artista,str(times)+" min",nombre,ruta])
 				maincard = dom.createElement("pista")
 				wml[0].appendChild(maincard)
 				nm = dom.createElement("track")

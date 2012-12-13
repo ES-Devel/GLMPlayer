@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
+from gi.repository import Gtk,GdkPixbuf,Gdk
 import gst
-from gi.repository import Gtk, GObject,GdkPixbuf
 import ThreadStream
-import path
+from core import resources
 import eyeD3
 import random
 from mutagen import File
@@ -12,56 +12,75 @@ from mutagen.mp3 import MPEGInfo
 from mutagen.id3 import ID3, APIC, error 
 
 class Stream():
-	def __init__(self,parent,param_artwork,progressBar,MediaTree,img,Noimg,\
-	statusBar,artist,album,duration,title):
+	def __init__(
+			self,
+			parent,
+			param_artwork,
+			progressBar,
+			MediaTree,
+			img,
+			Noimg,
+			statusBar,
+			artist,
+			album,
+			duration,
+			title
+		):
 			self.__parent__ = parent
 			self.player = gst.element_factory_make("playbin2", "player")
-			bus = self.player.get_bus()
-			bus.add_signal_watch()
-			bus.enable_sync_message_emission()
-			bus.connect("message", self.on_message)
+			bus = self.getBus()
+			
 			self.hilo = ThreadStream.RepThread(0,progressBar,1)
 			self.ProgressBar = progressBar
 			self.tmp_artwork = param_artwork
 			self.Tree = MediaTree
-			self.pathImg = img
-			self.pathNoImg = Noimg
+			self.resourcesImg = img
+			self.resourcesNoImg = Noimg
 			self.StatusBar = statusBar
+			
 			self.MAPA = [] 
 			self.current = 0
 			self.controler = 0
 			self.max = 0
 			self.time_song = 0
+			
 			self.Artist = artist
 			self.Album = album
 			self.Title = title
 			self.Duration = duration
         
 	def core(self):
-		self.stop_state()
-		select = self.Tree.get_selection()
-		filepath = path.on_tree_selection_changed(select)
-		tag = eyeD3.Tag()
-		audio = MP3(filepath)
+		
 		try:
-			artwork = file_t.tags['APIC:'].data 
-			with open(self.pathImg, 'wb') as img:
-				img.write(artwork)
-			self.tmp_artwork.set_from_pixbuf(\
-			GdkPixbuf.Pixbuf.new_from_file_at_size(self.pathImg, 200, 200))
+			self.stop_state()
 		except:
-			self.tmp_artwork.set_from_pixbuf(\
-			GdkPixbuf.Pixbuf.new_from_file_at_size(self.pathNoImg, 200, 200))
+			pass
+			
+		select = self.Tree.get_selection()
+		fileresources = resources.on_tree_selection_changed(select)
+		
+		try:
+			tag = eyeD3.Tag()
+			audio = MP3(fileresources)
+			tag.link(fileresources)
+		except:
+			print "No se puede obtener informacion sobre esta pista"
+		
+		self.loadArtwork(
+			DATA = File(fileresources)
+			)
 		
 		duration = audio.info.length
-		times = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
-		tag.link(filepath)
+		fileLen = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
+		
 		self.StatusBar.push(self.StatusBar.get_context_id("playing"),"Now playing")
-		self.Artist.set_text(tag.getArtist())
-		self.Album.set_text(tag.getAlbum())
-		self.Duration.set_text("%.2f" % times + "  min")
-		self.Title.set_text(tag.getTitle())
-		self.player.set_property("uri", "file://"+filepath)
+		
+		self.UpdateMetaData(
+			metaData = tag,
+			time = fileLen
+			)
+		
+		self.player.set_property("uri", "file://"+fileresources)
 		self.hilo = ThreadStream.RepThread(duration,self.ProgressBar,1)
 		self.hilo.start()
 		self.player.set_state(gst.STATE_PLAYING)
@@ -76,14 +95,27 @@ class Stream():
 			err, debug = message.parse_error()
 			print "Error: %s" % err, debug
 			self.StatusBar.push(self.StatusBar.get_context_id("Error"),"Error: somethig went wrong")
-                                                           
+    
+	def on_sync_message(self, bus, message):
+		if message.structure is None:
+			return
+		message_name = message.structure.get_name()
+		if message_name == "prepare-xwindow-id":
+			imagesink = message.src
+			imagesink.set_property("force-aspect-ratio", True)
+			Gdk.threads_enter()
+			imagesink.set_xwindow_id(self.__parent__.movie_window.window.xid)
+			Gdk.threads_leave()                                                       
 
 	def play_state(self):
 		if self.controler == 1:
 			self.player.set_state(gst.STATE_PLAYING)
 			self.StatusBar.push(self.StatusBar.get_context_id("playing"),"Now playing")
-			self.hilo = ThreadStream.RepThread(self.dur,\
-			self.ProgressBar,self.state)
+			self.hilo = ThreadStream.RepThread(
+					self.dur,
+					self.ProgressBar,
+					self.state
+				)
 			self.hilo.start()
 			self.controler = 0
 		else:
@@ -112,7 +144,10 @@ class Stream():
 				random.shuffle(self.MAPA)
 				self.current = 0
 			self.max = contador
-			self.core()
+			try:
+				self.core()
+			except:
+				pass
 	
 	def next_state(self): 
 		try:	 
@@ -132,18 +167,27 @@ class Stream():
 				iterador = modelo.get_iter(self.MAPA[self.current])
 				select.select_iter(iterador)
 				self.current = self.current + 1
-				self.core()
+				try:
+					self.core()
+				except:
+					pass
 	
 	def prev_state(self):
-		if self.current <= 0:
-			pass
-		else:
-			self.current = self.current - 1	
-			select = self.Tree.get_selection()
-			(modelo,filas) = select.get_selected_rows()
-			iterador = modelo.get_iter(self.MAPA[self.current])
-			select.select_iter(iterador)
-			self.core()	
+		try:
+			if self.MAPA[self.current] <= 0:
+				pass
+			else:
+				self.current = self.current - 1	
+				select = self.Tree.get_selection()
+				(modelo,filas) = select.get_selected_rows()
+				iterador = modelo.get_iter(self.MAPA[self.current])
+				select.select_iter(iterador)
+				try:
+					self.core()
+				except:
+					pass
+		except:
+			pass	
 
 	def stop_state(self):	
 		self.player.set_state(gst.STATE_NULL)
@@ -158,3 +202,33 @@ class Stream():
 
 	def KILL(self):
 		self.hilo.stop()
+		
+	def loadArtwork(self, DATA):
+		CHOOSEN = None
+		try:
+			artwork = DATA.tags['APIC:'].data 
+			with open(self.resourcesImg, 'wb') as img:
+				img.write(artwork)
+			CHOOSEN = self.resourcesImg
+		except:
+			CHOOSEN = self.resourcesNoImg
+		try:	
+			self.tmp_artwork.set_from_pixbuf(
+				GdkPixbuf.Pixbuf.new_from_file_at_size(CHOOSEN, 200, 200)
+							)
+		except:
+			print "No se puede cargar la imagen"
+						
+	def UpdateMetaData(self, metaData, time):
+		self.Artist.set_text(metaData.getArtist())
+		self.Album.set_text(metaData.getAlbum())
+		self.Duration.set_text("%.2f" % time + "  min")
+		self.Title.set_text(metaData.getTitle())
+		
+	def getBus(self):
+		bus = self.player.get_bus()
+		bus.add_signal_watch()
+		bus.enable_sync_message_emission()
+		bus.connect("message", self.on_message)
+		bus.connect("sync-message::element", self.on_sync_message)
+		return bus

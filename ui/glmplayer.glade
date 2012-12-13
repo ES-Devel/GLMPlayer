@@ -4,9 +4,13 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="About">
     <property name="can_focus">False</property>
-    <property name="border_width">36</property>
+    <property name="has_focus">True</property>
+    <property name="border_width">10</property>
     <property name="title" translatable="yes">Acerca de</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
     <property name="window_position">center</property>
+    <property name="skip_taskbar_hint">True</property>
     <property name="deletable">False</property>
     <child>
       <object class="GtkVBox" id="vbox1">
@@ -29,21 +33,40 @@
           </packing>
         </child>
         <child>
+          <object class="GtkImage" id="image1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">logo.png</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkLabel" id="descripcion">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="xpad">19</property>
-            <property name="label" translatable="yes">glmplayer es un reproductor capaz de reproducir diferentes formatos de sonido
-y de realizar streaming en vivo o grabaciones de audio.
+            <property name="label" translatable="yes">GLMPlayer es un reproductor mp3 libre, de código abierto. 
+Permite vincular cuentas de twitter y poder compartir la
+música que escuchas con tus seguidores. GLMPlayer es 
+distribuido según lo espeficado en la licencia pública general 
+(GPL). 
 
-Para más información contactar con los desarrolladodes, si has probado esta
-aplicación nos gustaría conocer tu opinión, por favor escribenos</property>
+				glmplayer		versión 0.01
+
+Créditos:
+
+agradezco a mi querida Alejandra Iveth Morales por su 
+apoyo en cada paso de este proyecto. </property>
           </object>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="padding">12</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -67,7 +90,7 @@ aplicación nos gustaría conocer tu opinión, por favor escribenos</property>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -96,7 +119,7 @@ aplicación nos gustaría conocer tu opinión, por favor escribenos</property>
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="padding">20</property>
-            <property name="position">3</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>
@@ -186,8 +209,11 @@ aplicación nos gustaría conocer tu opinión, por favor escribenos</property>
   <object class="GtkWindow" id="edit">
     <property name="can_focus">False</property>
     <property name="has_focus">True</property>
+    <property name="title" translatable="yes">Edición</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
+    <property name="window_position">center</property>
+    <property name="skip_taskbar_hint">True</property>
     <property name="deletable">False</property>
     <child>
       <object class="GtkVBox" id="vbox2">
@@ -283,7 +309,7 @@ aplicación nos gustaría conocer tu opinión, por favor escribenos</property>
                   <packing>
                     <property name="expand">True</property>
                     <property name="fill">True</property>
-                    <property name="padding">50</property>
+                    <property name="padding">47</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -387,6 +413,21 @@ aplicación nos gustaría conocer tu opinión, por favor escribenos</property>
             <property name="position">2</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkLabel" id="aviso">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">&lt;b&gt;Aviso:&lt;/b&gt; Los cambios se reflejarán en la lista al iniciar de nuevo 
+el programa, sin embargo, se reflejarán inmediatamente en el 
+cuadro de resumen de la pista al reproducirla.</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>
@@ -410,6 +451,14 @@ aplicación nos gustaría conocer tu opinión, por favor escribenos</property>
   </object>
   <object class="GtkListStore" id="media">
     <columns>
+      <!-- column-name Titulo -->
+      <column type="gchararray"/>
+      <!-- column-name Album -->
+      <column type="gchararray"/>
+      <!-- column-name Artista -->
+      <column type="gchararray"/>
+      <!-- column-name Duracion -->
+      <column type="gchararray"/>
       <!-- column-name Archivo -->
       <column type="gchararray"/>
       <!-- column-name Ruta -->
@@ -453,6 +502,8 @@ aplicación nos gustaría conocer tu opinión, por favor escribenos</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">GLMPLayer</property>
     <property name="window_position">center</property>
+    <property name="default_width">600</property>
+    <property name="default_height">400</property>
     <property name="icon">Logo.svg</property>
     <property name="icon_name">glmplayer</property>
     <accel-groups>
@@ -862,11 +913,48 @@ audio-volume-medium</property>
                         <property name="enable_tree_lines">True</property>
                         <child>
                           <object class="GtkTreeViewColumn" id="Archivos">
+                            <property name="resizable">True</property>
                             <property name="title">Titulo</property>
                             <child>
                               <object class="GtkCellRendererText" id="Textos"/>
                               <attributes>
                                 <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="Album">
+                            <property name="resizable">True</property>
+                            <property name="title" translatable="yes">Album</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="album_r"/>
+                              <attributes>
+                                <attribute name="text">1</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="Artista">
+                            <property name="resizable">True</property>
+                            <property name="title" translatable="yes">Artista</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="artista_r"/>
+                              <attributes>
+                                <attribute name="text">2</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="Duracion">
+                            <property name="resizable">True</property>
+                            <property name="title" translatable="yes">Duración</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                              <attributes>
+                                <attribute name="text">3</attribute>
                               </attributes>
                             </child>
                           </object>
@@ -883,56 +971,53 @@ audio-volume-medium</property>
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="searchBox">
+              <object class="GtkVBox" id="vboxCa">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow1">
+                  <object class="GtkHBox" id="searchBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
+                    <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkViewport" id="viewport2">
+                      <object class="GtkScrolledWindow" id="scrolledwindow1">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
                         <child>
-                          <object class="GtkAlignment" id="alignment2">
+                          <object class="GtkViewport" id="viewport2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="left_padding">12</property>
                             <child>
-                              <object class="GtkVBox" id="vbox5">
+                              <object class="GtkAlignment" id="alignment2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="left_padding">12</property>
                                 <child>
-                                  <object class="GtkImage" id="caratula">
+                                  <object class="GtkHBox" id="hboxCa">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="pixbuf">NOCD.png</property>
-                                    <property name="icon-size">6</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">True</property>
-                                    <property name="fill">True</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkHSeparator" id="hseparator1">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">True</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkHBox" id="hbox3">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <child>
+                                      <object class="GtkButton" id="button1">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="use_action_appearance">False</property>
+                                        <child>
+                                          <object class="GtkImage" id="caratula">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="pixbuf">NOCD.png</property>
+                                            <property name="icon-size">6</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
                                     <child>
                                       <object class="GtkFrame" id="frame3">
                                         <property name="visible">True</property>
@@ -1091,28 +1176,38 @@ audio-volume-medium</property>
                                       <packing>
                                         <property name="expand">True</property>
                                         <property name="fill">True</property>
-                                        <property name="position">0</property>
+                                        <property name="position">1</property>
                                       </packing>
                                     </child>
                                   </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="padding">4</property>
-                                    <property name="position">2</property>
-                                  </packing>
                                 </child>
                               </object>
                             </child>
                           </object>
                         </child>
                       </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
                     </child>
                   </object>
                   <packing>
                     <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFixed" id="fixed1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
               </object>

@@ -12,6 +12,9 @@
 from xml.dom.minidom import Document
 from xml.dom import minidom
 import resources
+import eyeD3
+from mutagen.mp3 import MP3 
+ 
 
 class MediaList():
 	def __init__(self,parent,MediaList,MediaTree,File):
@@ -21,13 +24,33 @@ class MediaList():
 		self.XML = File
 	
 	def Search(self):
+		tag = eyeD3.Tag()
 		try:
 			dom = minidom.parse(self.XML)
 			for i in range(0,len(dom.getElementsByTagName("track"))):
-				self.List.append([resources.clearing\
-				(dom.getElementsByTagName("track")[i].firstChild.data),resources.clearing\
-				(dom.getElementsByTagName("ruta")[i].firstChild.data)])
-        	except:
+				nombre = resources.clearing(dom.getElementsByTagName("track")[i].firstChild.data)
+				ruta = resources.clearing(dom.getElementsByTagName("ruta")[i].firstChild.data)
+				tag.link(ruta+"/"+nombre)
+				audio = MP3(ruta+"/"+nombre)
+				titulo = ""
+				artista = ""
+				album = ""
+				if tag.getAlbum() != "" and tag.getAlbum() != " ":
+					album = tag.getAlbum() 
+				else:
+					album = "Desconocido"
+				if tag.getArtist() != "" and tag.getArtist() != " ":
+					artista = tag.getArtist()
+				else:
+					artista = "Desconocido"
+				if tag.getTitle() != "" and tag.getTitle() != " ":
+					titulo = tag.getTitle()
+				else:
+					titulo = nombre
+				duration = audio.info.length	
+				times = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
+				self.List.append([titulo,album,artista,str(times)+" min",nombre,ruta])
+		except:
 			pass
 
 	def delete(self,widget):

@@ -23,7 +23,7 @@ def on_tree_selection_changed(selection):
 	if treeiter != None:
 		palabra = "" 
 		contador = 0
-		for letra in model[treeiter][1]:
+		for letra in model[treeiter][5]:
 			if letra != "\n":
 				if letra == " " and contador == 0:
 					pass
@@ -42,7 +42,7 @@ def on_tree_selection_changed(selection):
 					contador = contador+1
 		palabra = reverse(nueva)+"/"
 		contador = 0			
-		for letra in model[treeiter][0]:
+		for letra in model[treeiter][4]:
 			if letra != "\n":
 				if letra == " " and contador == 0:
 						pass

@@ -9,7 +9,7 @@
 :status: testing
 :license: GPL"""
 
-from gi.repository import Gtk, GObject
+from gi.repository import Gtk
 import resources
 
 class window(object):
