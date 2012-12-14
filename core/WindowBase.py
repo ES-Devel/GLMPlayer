@@ -12,7 +12,7 @@
 from gi.repository import Gtk
 import resources
 
-class window(object):
+class window( ):
 	"""Glmplayer class: window base"""
 
 	def __init__(self,parent,builder):

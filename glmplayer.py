@@ -24,9 +24,8 @@
 :status: testing - de pruebas
 :license: GPL"""
 	
-from gi.repository import Gtk,GdkPixbuf, GObject
+from gi.repository import Gtk,GdkPixbuf, Gdk
 from plugins import playbin
-loop = GObject.MainLoop()	
 import subprocess
 import random
 from core import window,importWindow,about,edit,mediaList,resources
@@ -34,7 +33,6 @@ import ConfigParser
 
 cfg = ConfigParser.ConfigParser() 
 cfg.read(["config/glmplayer.cfg"])
-
 
 class main:
 
@@ -75,7 +73,8 @@ class main:
 			"stock_album",
 			"herramientas",
 			"random",
-			"repeat"
+			"repeat",
+			"tiempo"
 			)	
 		
 		try:	
@@ -129,7 +128,7 @@ class main:
 			self.gst_builder = playbin.Stream(
 						self,
 						self.child["caratula"],
-						self.child["bar"],
+						self.child["tiempo"],
 						self.child["arbol_pistas"],
 						self.img,
 						self.Noimg,
@@ -193,7 +192,6 @@ class main:
 	
 	def destroy(self,widget):
 		Gtk.main_quit()
-		self.gst_builder.KILL()
 
 	def play(self,widget):
 		self.gst_builder.play_state()
@@ -207,8 +205,9 @@ class main:
 	def next(self,widget):
 		self.gst_builder.next_state()
 
+
 	def stop(self,widget):
-		self.gst_builder.stop_state()	
+		self.gst_builder.stop_state()
 	
 	def random(self,widget):
 		if self.child["random"].get_active() == False:
@@ -299,5 +298,4 @@ class main:
 					
 if __name__ == "__main__":
     main()   
-    loop.quit()
     Gtk.main()
