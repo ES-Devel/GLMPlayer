@@ -13,10 +13,16 @@ from xml.dom import minidom
 
 import os
 
-import eyeD3
+try:
+	import eyeD3
+except ImportError:
+	print "To run this program correctly you must install python-eyed3"
 
-from mutagen.mp3 import MP3 
-
+try:
+    from mutagen.mp3 import MP3 
+except ImportError:
+	print "To run this program correctly you must install mutagen" 
+	
 filepattern = ( ("MP3","*.mp3") ,) 
 
 class importWindow( WindowBase.window ):
@@ -69,7 +75,7 @@ class importWindow( WindowBase.window ):
 					
 				time_ = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
 				self.getParent( ).child["media"].append(
-					[ titulo , album , artista , str(times_)+" min" , nombre , ruta ]
+					[ titulo , album , artista , str(time_)+" min" , nombre , ruta ]
 				)
 				
 				maincard = dom.createElement	( "pista"  )

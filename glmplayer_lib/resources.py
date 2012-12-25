@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 def ui( ):
-	return "../data/ui/glmplayer.glade"
+	return "data/ui/glmplayer.glade"
 
 def uiPath():
-	return "../data/ui/"
+	return "data/ui/"
 
 def ConfigFiles():
-	return "../data/config/"
+	return "data/config/"
 
 def reverse(list):
 	if len(list)==1:
@@ -82,3 +82,47 @@ def clearing(array):
 				contador = contador+1			 
 	palabra = reverse(nueva)
 	return palabra 
+	
+def getSignals( pointer ):
+		return {"on_agregar_activate": pointer.importFiles.OpenDialog,
+		"gtk_main_quit":pointer.destroy,
+		"on_delete_clicked":pointer.PlayList.delete,
+		"on_play_clicked":pointer.play,
+		"on_random_toggled":pointer.configManager.random,
+		"on_repeat_toggled":pointer.configManager.repeat,
+		"on_pause_clicked":pointer.pause,
+		"on_prev_clicked":pointer.prev,
+		"on_next_clicked":pointer.next,
+		"on_stop_clicked":pointer.stop,
+		"on_ayud_activate":pointer.about.Show,
+		"on_about_tool_clicked":pointer.about.Show,
+		"on_clean_clicked":pointer.PlayList.clean,
+		"on_close_about_clicked":pointer.about.Hide,
+		"on_salir_activate":pointer.destroy,
+		"on_volumen_value_changed":pointer.cb_master_slider_change,
+		"on_AbrirB_clicked":pointer.importFiles.OpenDialog,
+		"on_editar_clicked":pointer.edit.edicion,
+		"on_cancel_edit_clicked":pointer.edit.stop_edicion,
+		"on_ok_edit_clicked":pointer.edit.save
+		}
+		
+objects = (
+			"arbol_pistas",
+			"media",
+			"selec",
+			"caratula",
+			"info",
+			"artista",
+			"album",
+			"titulo",
+			"duracion",
+			"volumen",
+			"bar",
+			"stock_interp",
+			"stock_titulo",
+			"stock_album",
+			"herramientas",
+			"random",
+			"repeat",
+			"tiempo"
+			)

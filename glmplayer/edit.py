@@ -5,7 +5,10 @@
 
 from glmplayer_lib import WindowBase, resources
 
-import eyeD3
+try:
+	import eyeD3
+except ImportError:
+	print "To run this program correctly you must install python-eyed3"
 
 class editWindow( WindowBase.window ):
 

@@ -1,0 +1,8 @@
+[Desktop Entry]
+_Name=Glmplayer
+_Comment=Mp3 Player
+Categories=GNOME;AudioVideo;
+Exec=glmplayer
+Icon=glmplayer
+Terminal=false
+Type=Application

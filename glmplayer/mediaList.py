@@ -9,9 +9,15 @@ from xml.dom.minidom import Document
 
 from xml.dom import minidom
 
-import eyeD3
+try:
+	import eyeD3
+except ImportError:
+	print "To run this program correctly you must install python-eyed3"
 
-from mutagen.mp3 import MP3 
+try:
+    from mutagen.mp3 import MP3 
+except ImportError:
+	print "To run this program correctly you must install mutagen"
  
 
 class MediaList( ):
