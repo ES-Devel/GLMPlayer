@@ -43,17 +43,10 @@ directorios:
 	/bin -> contiene el archivo que inicializa el programa
 	/glmplayer -> clases de ventana principal
 	/glmplayer_lib -> ventanas secundarias
-	/help -> utilidades varias
 	/data -> 
 		/config -> archivo de configuracion
 		/plugins -> plugins de reproduccion
 		/ui -> archivos de interfaz grafica
-
-Bug's:
-======
-	Interferencia entre Glib y Gstreamer -> core dump
-	Interferencia entre threads y Gtk ->
-		Gtk.main() detiene los hilos secundarios del programa
 
 features:
 =========
@@ -64,7 +57,26 @@ features:
 
 formatos soportados:
 ====================
-	los formatos soportados actualmente con mp3
+	los formatos soportados actualmente son mp3
+	
+Instalacion:
+============
+		  $ python setup.py build 
+	[root]# python setup.py install
+	
+	para mas informacion
+		  $ python setup.py --help
+		  
+	Los directorios donde se instalan los programas 
+	pueden variar en cada distribucion, para obtener 
+	mayor control sobre la instalacion usar las 
+	opciones --prefix y/o --root de la siguiente manera
+	
+	[root]# python setup.py install --prefix="PATH" --root="PATH"
+	
+	los valores por defecto son:
+		--prefix = "/usr/local"
+		--root = "/" 
 
 ========================================================================
 ========================================================================
