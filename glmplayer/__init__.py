@@ -11,3 +11,4 @@ def main():
     'constructor for your class instances'
     # Run the application.
     Glmplayer.main()
+    Gtk.main( )

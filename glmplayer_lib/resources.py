@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 def ui( ):
-	return "data/ui/glmplayer.glade"
+	return "/usr/local/share/Glmplayer/ui/glmplayer.glade"
 
 def uiPath():
-	return "data/ui/"
+	return "/usr/local/share/Glmplayer/ui"
 
 def ConfigFiles():
-	return "data/config/"
+	return "/usr/local/share/Glmplayer/config/"
 
 def reverse(list):
 	if len(list)==1:
@@ -82,17 +82,24 @@ def clearing(array):
 				contador = contador+1			 
 	palabra = reverse(nueva)
 	return palabra 
+
+def cleanNode(i):
+	for token in i:
+		if token == '(' or token == ' ' or token == ',' or token == ')':
+			pass
+		else:
+			return token
 	
 def getSignals( pointer ):
 		return {"on_agregar_activate": pointer.importFiles.OpenDialog,
 		"gtk_main_quit":pointer.destroy,
 		"on_delete_clicked":pointer.PlayList.delete,
-		"on_play_clicked":pointer.play,
+		"on_play_toggled":pointer.verify,
 		"on_random_toggled":pointer.configManager.random,
 		"on_repeat_toggled":pointer.configManager.repeat,
-		"on_pause_clicked":pointer.pause,
 		"on_prev_clicked":pointer.prev,
 		"on_next_clicked":pointer.next,
+		"on_handler_clicked":pointer.next,
 		"on_stop_clicked":pointer.stop,
 		"on_ayud_activate":pointer.about.Show,
 		"on_about_tool_clicked":pointer.about.Show,
@@ -124,5 +131,9 @@ objects = (
 			"herramientas",
 			"random",
 			"repeat",
-			"tiempo"
+			"tiempo",
+			"play",
+			"next",
+			"handler",
+			"icon"
 			)

@@ -40,8 +40,7 @@ def update_config(libdir, values = {}):
         sys.exit(1)
     print oldvalues
     return oldvalues
-
-
+    
 def move_desktop_file(root, target_data, prefix):
     # The desktop file is rightly installed into install_data.  But it should
     # always really be installed into prefix, because while we can install
@@ -106,8 +105,7 @@ def compile_schemas(root, target_data):
 class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
     def run(self):
         DistUtilsExtra.auto.install_auto.run(self)
-
-        target_data = '/' + os.path.relpath(self.install_data, self.root) + '/'
+        target_data = '/' +os.path.relpath(self.install_data, self.root) + '/'
         target_pkgdata = target_data + 'share/glmplayer/'
         target_scripts = '/' + os.path.relpath(self.install_scripts, self.root) + '/'
 
@@ -131,7 +129,7 @@ DistUtilsExtra.auto.setup(
     author='William Parras',
     author_email='william.parras.mendez@gmail.com',
     description='Mp3 Player',
-    long_description='Mp3 Player, light and powerful',
+    long_description='light and powerful',
     url='https://launchpad.net/glmplayer',
     cmdclass={'install': InstallAndUpdateDataDirectory}
     )

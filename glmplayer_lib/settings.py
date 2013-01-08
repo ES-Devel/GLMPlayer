@@ -19,10 +19,10 @@ class ConfigManager( ):
         # cargamos archivo de configuracion
         # se verifica la relatividad de los directorios
         try: 
-            self.path = "../"+filePath
+            self.path = "/usr/local/share/Glmplayer/config/"+filePath
             self.cfg.read([self.path]) 
         except:
-            self.path = filePath 
+            self.path = "data/config/"+filePath 
             self.cfg.read([self.path])
 
     def LoadSettings( self ):
