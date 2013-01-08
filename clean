@@ -1,6 +1,0 @@
-#!/bin/sh
-
-rm -R glmplayer/*.pyc
-rm -R glmplayer_lib/*.pyc
-rm -R data/*.pyc
-rm -R data/plugins/*.pyc
