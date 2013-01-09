@@ -30,53 +30,40 @@ Licencia:
 
 dependencias:
 =============
-	mutagen -> Modificar y mostrar metadata como: longitud de archivo,
-			   imagen de portada
-	gstreamer reproduccion de audio
-	Gtk -> Interfaz grafica
-	GObject
-	Glib
-	eyeD3 -> metadata como: titulo, artista, album
 	
-directorios:
-============
-	/bin -> contiene el archivo que inicializa el programa
-	/glmplayer -> clases de ventana principal
-	/glmplayer_lib -> ventanas secundarias
-	/data -> 
-		/config -> archivo de configuracion
-		/plugins -> plugins de reproduccion
-		/ui -> archivos de interfaz grafica
+	
+	Build-Depends: 
+		debhelper (>= 8),
+ 		python (>= 2.6.6-3~),
+ 		python-distutils-extra (>= 2.10)
+	
+	mutagen 
+		versión que utiliza Glmplayer: http://dl.dropbox.com/u/92395777/mutagen-1.20.tar.gz,
+		para mayor información visita la web del autor: http://code.google.com/p/mutagen/ 
+	gir1.2-glib-2.0,
+ 	gir1.2-gtk-3.0,
+ 	python-gst0.10,
+ 	python-eyed3,
+ 	gir1.2-gdkpixbuf-2.0
 
-features:
-=========
-	notificaciones: muestra titulo de la cancion
-	caratula de album: muestra la caratula del album
-	edicion de pistas: permite modificar la metadata de
-					   los archivos de audio
-
-formatos soportados:
-====================
-	los formatos soportados actualmente son mp3
+formatos soportados actualmente:
+================================
+	MP3
 	
 Instalacion:
 ============
-		  $ python setup.py build 
-	[root]# python setup.py install
-	
-	para mas informacion
-		  $ python setup.py --help
-		  
-	Los directorios donde se instalan los programas 
-	pueden variar en cada distribucion, para obtener 
-	mayor control sobre la instalacion usar las 
-	opciones --prefix y/o --root de la siguiente manera
-	
-	[root]# python setup.py install --prefix="PATH" --root="PATH"
+	$ python setup.py build 
+	# python setup.py install --prefix="PATH" --root="PATH"
 	
 	los valores recomendados para la instalacion son:
 		--prefix = "/usr/local"
-		--root = "" 
+		--root = ""
+		
+	si conoce lo que esta haciendo puede utilizar otros valores
+		
+	para mas informacion
+		  $ python setup.py --help
+	 
 
 ========================================================================
 ========================================================================
