@@ -37,6 +37,8 @@ class main:
 		self.img = "artwork.png" # arte del album
 		self.Noimg = "NOCD.png" # imagen en caso de no econtrar el arte
 		self.isPaused = False
+		self.__numErrors__ = 0
+		self.__errorLog__ = []
 		
 		# manejador de configuracion
 		# posteriormente se indica la ruta del archivo
@@ -104,7 +106,7 @@ class main:
 					self.Storage
 				) # inicia el controlador del playlist
 				
-		self.PlayList.Search( ) # realiza la busqueda de pistas	
+		self.__numErrors__, self.__errorLog__ = self.PlayList.Search( ) # realiza la busqueda de pistas	
 		
 		try:
 		    self.child["caratula"].set_from_pixbuf(
@@ -132,6 +134,8 @@ class main:
 		dict = resources.getSignals( self ) # define los eventos
 		
 		self.__window.getBuilder( ).connect_signals(dict) # conecta los eventos
+		
+		self.child["ErrorLogButton"].set_label("Errores ("+str(self.__numErrors__)+")")
 		
 	def cb_master_slider_change(self, widget,event,data=None):		
 		try:
@@ -163,9 +167,14 @@ class main:
 		self.hilo.start()
 	
 	def next(self,widget):
+	    self.initUpdate( )
 	    self.sig( )
 
-
+    def next2(self,widget):
+        self.initUpdate( )
+        time.sleep(0.5)
+	    self.sig( )
+    
 	def stop(self,widget):
 	    self.detener()
 		
@@ -213,7 +222,6 @@ class main:
 	        return "0"+str(self.minCt)+":"+str(time)
 	        
     def sig(self):
-        self.initUpdate( )
 	    self.flag = True
 		self.len = self.gst_builder.next_state( )
 		if self.len == None:

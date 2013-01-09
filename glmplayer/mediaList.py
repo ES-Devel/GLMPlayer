@@ -18,17 +18,16 @@ from glmplayer_lib import resources
 
 from xml.dom.minidom import Document
 
-from xml.dom import minidom
+from xml.dom import minidom 
 
 try:
 	import eyeD3
 except ImportError:
-	print "To run this program correctly you must install python-eyed3"
-
+	pass
 try:
     from mutagen.mp3 import MP3 
 except ImportError:
-	print "To run this program correctly you must install mutagen"
+	pass
  
 
 class MediaList( ):
@@ -39,6 +38,8 @@ class MediaList( ):
 		self.XML = File
 	
 	def Search(self):
+	    __numErrors__ = 0
+        __errorLog__ = []
 		tag = eyeD3.Tag	( )
 		try:
 		    dom = minidom.parse( "data/config/"+self.XML )
@@ -49,15 +50,14 @@ class MediaList( ):
 		num = len( dom.getElementsByTagName("pista") )
 		i = 0
 		while i < num:
-		    try:
-			    nombre = resources.clearing ( 
+		    nombre = resources.clearing ( 
 				    		dom.getElementsByTagName("track")[i].firstChild.data
 				    	)
 				    	
-			    ruta = resources.clearing (
+            ruta = resources.clearing (
 			    			dom.getElementsByTagName("ruta")[i].firstChild.data
-			    		)		
-					
+			    		)
+		    try:			
 		    	tag.link( ruta+"/"+nombre )
 	    		audio = MP3	( ruta+"/"+nombre )
 			
@@ -83,9 +83,12 @@ class MediaList( ):
 	    				)
 			
 	    	except:
-	    	    print "hay archivos perdidos"
+	    	    __numErrors__ = __numErrors__ + 1
+	    	    __errorLog__.append("file//:"+ruta+"/"+nombre+"  Not Found")
 
             i = i + 1
+            
+        return __numErrors__, __errorLog__
 
 	def delete(self,widget):
 		try:

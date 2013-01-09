@@ -112,7 +112,7 @@ def getSignals( pointer ):
 		"on_repeat_toggled":pointer.configManager.repeat,
 		"on_prev_clicked":pointer.prev,
 		"on_next_clicked":pointer.next,
-		"on_handler_clicked":pointer.next,
+		"on_handler_clicked":pointer.next2,
 		"on_stop_clicked":pointer.stop,
 		"on_ayud_activate":pointer.about.Show,
 		"on_about_tool_clicked":pointer.about.Show,
@@ -148,5 +148,6 @@ objects = (
 			"play",
 			"next",
 			"handler",
-			"icon"
+			"icon",
+			"ErrorLogButton"
 			)
