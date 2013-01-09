@@ -74,9 +74,9 @@ Instalacion:
 	
 	[root]# python setup.py install --prefix="PATH" --root="PATH"
 	
-	los valores por defecto son:
+	los valores recomendados para la instalacion son:
 		--prefix = "/usr/local"
-		--root = "/" 
+		--root = "" 
 
 ========================================================================
 ========================================================================
