@@ -57,7 +57,7 @@ Instalacion:
 	
 	los valores recomendados para la instalacion son:
 		--prefix = "/usr/local"
-		--root = ""
+		--root = "/"
 		
 	si conoce lo que esta haciendo puede utilizar otros valores
 		
