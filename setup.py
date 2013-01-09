@@ -23,7 +23,7 @@ import sys
 try:
     import DistUtilsExtra.auto
 except ImportError:
-    print >> sys.stderr, 'To build template you need https://launchpad.net/python-distutils-extra'
+    print >> sys.stderr, 'To build Glmplayer you need https://launchpad.net/python-distutils-extra  - also you must install intltool'
     sys.exit(1)
 assert DistUtilsExtra.auto.__version__ >= '2.18', 'needs DistUtilsExtra.auto >= 2.18'
 
@@ -58,15 +58,15 @@ def move_desktop_file(root, target_data, prefix):
     # normal data files anywhere we want, the desktop file needs to exist in
     # the main system to be found.  Only actually useful for /opt installs.
 
-    old_desktop_path = os.path.normpath(root + target_data +
-                                        '/share/applications')
+    old_desktop_path = os.path.normpath(target_data +'/share/applications')
     old_desktop_file = old_desktop_path + '/glmplayer.desktop'
-    desktop_path = os.path.normpath(root + prefix + '/share/applications')
+    desktop_path = os.path.normpath(prefix + '/share/applications')
     desktop_file = desktop_path + '/glmplayer.desktop'
 
     if not os.path.exists(old_desktop_file):
-        print ("ERROR: Can't find", old_desktop_file)
-        sys.exit(1)
+        #print ("ERROR: Can't find", old_desktop_file)
+        #sys.exit(1)
+        pass
     elif target_data != prefix + '/':
         # This is an /opt install, so rename desktop file to use extras-
         desktop_file = desktop_path + '/extras-glmplayer.desktop'
@@ -75,8 +75,9 @@ def move_desktop_file(root, target_data, prefix):
             os.rename(old_desktop_file, desktop_file)
             os.rmdir(old_desktop_path)
         except OSError as e:
-            print ("ERROR: Can't rename", old_desktop_file, ":", e)
-            sys.exit(1)
+            #print ("ERROR: Can't rename", old_desktop_file, ":", e)
+            #sys.exit(1)
+            pass
 
     return desktop_file
 
@@ -101,8 +102,9 @@ def update_desktop_file(filename, target_pkgdata, target_scripts):
         fin.close()
         os.rename(fout.name, fin.name)
     except (OSError, IOError), e:
-        print ("ERROR: Can't find %s" % filename)
-        sys.exit(1)
+        #print ("ERROR: Can't find %s" % filename)
+        #sys.exit(1)
+        pass
 
 def compile_schemas(root, target_data):
     if target_data == '/usr/':
@@ -115,10 +117,6 @@ def compile_schemas(root, target_data):
 
 class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
     def run(self):
-        if self.root == None:
-            self.root = ""
-        if self.prefix == None:
-            self.prefix = "/usr/local"
         DistUtilsExtra.auto.install_auto.run(self)
         target_data = '/' +os.path.relpath(self.install_data, self.root) + '/'
         target_pkgdata = target_data + 'share/glmplayer/'

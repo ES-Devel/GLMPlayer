@@ -16,7 +16,7 @@
 
 from gi.repository import Gtk
 
-import Glmplayer
+from glmplayer import Glmplayer
 
 def main():
     'constructor for your class instances'

@@ -14,15 +14,13 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 	
-from gi.repository import Gtk,GdkPixbuf, GLib #interfaz grafica
+from gi.repository import Gtk,GdkPixbuf, GLib 
 
-import subprocess # subprocesos - modificar volumen
+from glmplayer import window,importWindow,about,edit,mediaList 
 
-from glmplayer_lib import resources, settings # ruta hacia configuraciones y ui
+from glmplayer_lib import playbin, resources, settings
 
-import window,importWindow,about,edit,mediaList # ventanas
-
-from glmplayer_lib import playbin # plugins
+import subprocess 
 
 import threading
 
@@ -39,6 +37,7 @@ class main:
 		self.img = "artwork.png" # arte del album
 		self.Noimg = "NOCD.png" # imagen en caso de no econtrar el arte
 		self.isPaused = False
+		
 		# manejador de configuracion
 		# posteriormente se indica la ruta del archivo
 		# para mas detalles de como esta clase trabaja 
