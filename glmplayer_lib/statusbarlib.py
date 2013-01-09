@@ -14,22 +14,14 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-__status__ = "enable"
-__package__ = "GlmplayerNotify"
+from gi.repository import Gtk
 
-try:
-    from gi.repository import Notify as pynotify
+class barhandler( ):
 
-    def notify(title, msg, icon=None):
-        if not pynotify.is_initted():
-            pynotify.init(title)
-            note = pynotify.Notification.new(title, msg, icon)
-        note.show()
-except:
-    __status__ = "disabled"
-
-def getStatus():
-    return __status__
+    __package__ = "GlmplayerStatusbar"
     
-def getPackageName():
-    return __package__
+    def __init__(self, target ):
+        self.__target = target
+    
+    def setText(self, string):
+        self.__target.push( self.__target.get_context_id( string ), string )

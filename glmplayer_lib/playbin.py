@@ -11,17 +11,12 @@
 # PURPOSE.  See the GNU General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License along 
-# with this program.  If not, see <http://www.gnu.org/licenses/>.
+# with this program.  If not, see <http://www.gfrom gi.repository import Gtknu.org/licenses/>.
 ### END LICENSE
 
 from gi.repository import Gtk,GdkPixbuf,Gdk 
 
-from glmplayer_lib import resources
-
-try:
-	import eyeD3
-except ImportError:
-	print "To run this program correctly you must install python-eyed3"
+from glmplayer_lib import resources, glmplayerconfig
 
 import random
 
@@ -33,35 +28,30 @@ try:
 	from mutagen.mp3 import MP3
 
 	from mutagen.id3 import ID3, APIC, error
+	
+	import eyeD3
+	
 except ImportError:
-	print "To run this program correctly you must install mutagen" 
+	pass 
 
 class Stream():
-	def __init__( self, parent, param_artwork, progressBar,
-		      MediaTree, img, Noimg, statusBar, artist, album, duration, title ):
+	def __init__( self, parent, param_artwork, progressBar, MediaTree, metadatahandler ):
 
 			self.__parent__ = parent
 			self.player = gst.element_factory_make( "playbin2", "player" )
-							
-			bus = self.getBus( )
 									
 			self.ProgressBar = progressBar
 			self.tmp_artwork = param_artwork
 			self.Tree = MediaTree
-			self.resourcesImg = img
-			self.resourcesNoImg = Noimg
-			self.StatusBar = statusBar
+			self.resourcesImg = glmplayerconfig.get_data_path()+"/ui/artwork.png"
+			self.resourcesNoImg = glmplayerconfig.get_data_path()+"/ui/NOCD.png"
+			self.metadatahandler = metadatahandler
 			
 			self.MAPA = [] 
 			self.current = 0
 			self.controler = 0
 			self.max = 0
 			self.time_song = 0
-			
-			self.Artist = artist
-			self.Album = album
-			self.Title = title
-			self.Duration = duration 
         
 	def core(self):
 		self.stop_state( )
@@ -79,29 +69,20 @@ class Stream():
 		
 		duration = audio.info.length
 		fileLen = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
-
-		self.StatusBar.push(
-				self.StatusBar.get_context_id( "playing" ),
-				"Now playing"
-				)
 		
-		self.UpdateMetaData( metaData = tag, time = fileLen )	
+		self.metadatahandler.UpdateMetaData( metaData = tag, time = fileLen )	
 		
 		model, treeiter = select.get_selected(	)
 		
 		
 		self.player.set_property( "uri", "file://"+fileresources )		
 		self.player.set_state( gst.STATE_PLAYING )
+		
 		return duration                              
 
 	def play_state(self):
 		if self.controler == 1:
 			self.player.set_state( gst.STATE_PLAYING )
-			self.StatusBar.push(
-						self.StatusBar.get_context_id("playing"),
-						"Now playing"
-					)
-					
 			self.controler = 0
 		else:
 			select = self.Tree.get_selection( )
@@ -125,15 +106,13 @@ class Stream():
 				self.current = 0
 			self.max = contador
 			
-			return self.core( )
+			return self.core( ), "Now Playing"
 	
 	def next_state(self): 
 		try:	 
 			select = self.Tree.get_selection( )
 			( modelo , filas ) = select.get_selected_rows(	)
-			iterador = modelo.get_iter(
-					self.MAPA[self.current]
-					)
+			iterador = modelo.get_iter( self.MAPA[self.current] )
 			select.select_iter( iterador )
 			self.current = self.current + 1
 			return self.core( )
@@ -147,7 +126,7 @@ class Stream():
 				iterador = modelo.get_iter( self.MAPA[self.current] )
 				select.select_iter( iterador )
 				self.current = self.current + 1
-				return self.core(  )
+				return self.core(  ), "Now Playing"
 	
 	def prev_state(self):
 		if self.MAPA[self.current] <= 0:
@@ -158,22 +137,16 @@ class Stream():
 			( modelo , filas ) = select.get_selected_rows( )
 			iterador = modelo.get_iter( self.MAPA[self.current] )
 			select.select_iter(iterador)
-			return self.core( )
+			return self.core( ), "Now Playing"
 
 	def stop_state(self):	
 		self.player.set_state( gst.STATE_NULL )
-		self.StatusBar.push(
-				self.StatusBar.get_context_id( "Stop" ),
-				"Stop"
-				)
+		return "Stop"
 		
 	def pause_state(self):
-		self.player.set_state( gst.STATE_PAUSED )
-		self.StatusBar.push(
-				self.StatusBar.get_context_id( "pause" ),
-				"Paused"
-				)	
+		self.player.set_state( gst.STATE_PAUSED )	
 		self.controler = 1
+		return "Paused"
 		
 	def loadArtwork(self, DATA):
 		CHOOSEN = None
@@ -185,20 +158,6 @@ class Stream():
 		except:
 			CHOOSEN = self.resourcesNoImg
 		try:	
-			self.tmp_artwork.set_from_pixbuf(
-				GdkPixbuf.Pixbuf.new_from_file_at_size( CHOOSEN, 200, 200 ) )
+			self.tmp_artwork.set_from_pixbuf( GdkPixbuf.Pixbuf.new_from_file_at_size( CHOOSEN, 200, 200 ) )
 		except:
 			print "No se puede cargar la imagen"
-						
-	def UpdateMetaData(self, metaData, time):
-		self.Artist.set_text( metaData.getArtist(	) )
-		self.Album.set_text	( metaData.getAlbum(	) )
-		self.Duration.set_text	( "%.2f" % time + "  min" )
-		self.Title.set_text	( metaData.getTitle(	) )
-		
-	def getBus(self):
-		bus = self.player.get_bus(	)
-		bus.add_signal_watch(  )
-		bus.enable_sync_message_emission(  )
-		return bus
-		

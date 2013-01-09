@@ -16,7 +16,7 @@
 
 from glmplayer import window,importWindow,about,edit,mediaList 
 
-from glmplayer_lib import playbin, resources, settings, glmplayerconfig
+from glmplayer_lib import playbin, resources, settings, glmplayerconfig, statusbarlib, metadatalib
 
 from gi.repository import Gtk,GdkPixbuf, GLib 
 
@@ -47,10 +47,9 @@ class main:
 		self.__builder = Gtk.Builder( )
 		self.__builder.add_from_file( glmplayerconfig.get_data_path()+"/ui/glmplayer.glade" )
 		
-		# see glmplayer_lib/resources.py for more details about resources.objects
-		# self.child are Gtk.Objects  
 		# see glmplayer/window.py for more details about how this class works 
 		self.__window = window.Glmplayer( self, self.__builder )
+		# see glmplayer_lib/resources.py for more details about resources.objects
 		self.child = self.__window.Start( "ventana_principal", resources.objects )
 		self.__window.getInstance( ).maximize( )
 		
@@ -71,20 +70,21 @@ class main:
 		
 		self.LoadChildWindows( )
 		
+		# Gtk.StatusBar handler
+		# see glmplayer_lib/statusbarlib.py for more details about how this class works
+		self.statusBar = statusbarlib.barhandler( self.child["info"] )
+		
+		# metadata handler
+		# see glmplayer_lib/metadatalib.py for more details about how this class works
+		self.metadatahandler = metadatalib.metadataMp3(self.child,"artista","album","duracion","titulo")
+		
 		# playbin handler
 		# see glmplayer_lib/playbin.py for more details about how this class works
-		self.gst_builder = playbin.Stream(
-					self,
+		self.gst_builder = playbin.Stream( self,
 					self.child["caratula"],
 					self.child["tiempo"],
 					self.child["arbol_pistas"],
-					glmplayerconfig.get_data_path()+"/ui/artwork.png",
-					glmplayerconfig.get_data_path()+"/ui/NOCD.png",
-					self.child["info"],
-					self.child["artista"],
-					self.child["album"],
-					self.child["duracion"],
-					self.child["titulo"]
+					self.metadatahandler
 				)
 				
         # see glmplayer/mediaList.py for more details about how this class works
@@ -107,17 +107,9 @@ class main:
 				 )
 
 		
-		self.child["info"].push(
-				self.child["info"].get_context_id("load done"),
-				"Done "
-			)
-		
-		# def event
 		dict = resources.getSignals( self )
-		# init event
-		self.__window.getBuilder( ).connect_signals(dict) 
-		
-		self.child["ErrorLogButton"].set_label("Errores ("+str(self.__numErrors__)+")")
+		self.__window.getBuilder( ).connect_signals(dict)
+		self.finishInitProc( )
 		
 	def cb_master_slider_change(self, widget,event,data=None):		
 		try:
@@ -135,12 +127,13 @@ class main:
 	def pause(self):
 	    self.flag = False
 	    self.isPaused = True
-		self.gst_builder.pause_state( )
+		self.statusBar.setText( self.gst_builder.pause_state( ) )
 		
 	def prev(self,widget):
 	    self.initUpdate( )
 	    self.flag = True
-		self.len = self.gst_builder.prev_state( )
+		self.len, st = self.gst_builder.prev_state( )
+		self.statusBar.setText(st)
 		if self.len == None:
 		    self.len = self.prov
 		else:
@@ -204,7 +197,8 @@ class main:
 	        
     def sig(self):
 	    self.flag = True
-		self.len = self.gst_builder.next_state( )
+		self.len, st = self.gst_builder.next_state( )
+		self.statusBar.setText(st)
 		if self.len == None:
 		    self.len = self.prov
 		else:
@@ -214,10 +208,11 @@ class main:
 	
 	def detener(self):
 	    self.initUpdate( )
-		self.gst_builder.stop_state( )
+		self.statusBar.setText( self.gst_builder.stop_state( ) )
 		
 	def reproducir(self):
-		self.len = self.gst_builder.play_state( )
+		self.len, st = self.gst_builder.play_state( )
+		self.statusBar.setText(st)
 		if self.len == None:
 		    self.len = self.prov
 		else:
@@ -235,4 +230,8 @@ class main:
 	        self.reproducir()
 	    else:
 	        self.pause()
+	        
+	def finishInitProc(self):
+	    self.statusBar.setText("Done") 
+		self.child["ErrorLogButton"].set_label("Errores ("+str(self.__numErrors__)+")")    
     

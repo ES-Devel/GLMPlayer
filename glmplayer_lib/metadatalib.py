@@ -11,25 +11,18 @@
 # PURPOSE.  See the GNU General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License along 
-# with this program.  If not, see <http://www.gnu.org/licenses/>.
+# with this program.  If not, see <http://www.gfrom gi.repository import Gtknu.org/licenses/>.
 ### END LICENSE
 
-__status__ = "enable"
-__package__ = "GlmplayerNotify"
-
-try:
-    from gi.repository import Notify as pynotify
-
-    def notify(title, msg, icon=None):
-        if not pynotify.is_initted():
-            pynotify.init(title)
-            note = pynotify.Notification.new(title, msg, icon)
-        note.show()
-except:
-    __status__ = "disabled"
-
-def getStatus():
-    return __status__
-    
-def getPackageName():
-    return __package__
+class metadataMp3( ):
+    def __init__(self, container, *kwargs ):
+        self.container = { }
+        self.kw = kwargs
+        for i in kwargs:
+            self.container[i] = container[i] 
+        
+    def UpdateMetaData(self, metaData, time):
+		self.container["artista"].set_text( metaData.getArtist(	) )
+		self.container["album"].set_text	( metaData.getAlbum(	) )
+		self.container["duracion"].set_text	( "%.2f" % time + "  min" )
+		self.container["titulo"].set_text	( metaData.getTitle(	) )
