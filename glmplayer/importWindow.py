@@ -56,12 +56,8 @@ class importWindow( WindowBase.window ):
 		self.getInstance( ).remove_filter( self.filtro )
 		
 		self.Hide_( )
-		try:
-		    dom = minidom.parse( "data/config/"+self.XML )
-		    files_save = "data/config/"+self.XML
-		except:
-		    dom = minidom.parse( "/usr/local/share/Glmplayer/config/"+self.XML )
-		    files_save = "/usr/local/share/Glmplayer/config/"+self.XML
+		
+		dom = minidom.parse( self.XML )
 		wml = dom.getElementsByTagName ('wml')
 		
 		if respt == -5:
@@ -105,7 +101,7 @@ class importWindow( WindowBase.window ):
 				paths = dom.createTextNode		( dirs     )
 				dr.appendChild					( paths    )
 				
-			xmldocument = open( files_save , "w" )
+			xmldocument = open( self.XML , "w" )
 			dom.writexml( xmldocument )
 			xmldocument.close(  )
 

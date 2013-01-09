@@ -31,24 +31,10 @@ try:
 	from mutagen import File
 
 	from mutagen.mp3 import MP3
- 
+
 	from mutagen.id3 import ID3, APIC, error
 except ImportError:
 	print "To run this program correctly you must install mutagen" 
-
-#import dbus
-
-#bus = dbus.SessionBus(	)
-#notify_object = bus.get_object(
-#			'org.freedesktop.Notifications',
-#			'..(./org/freedesktop/Notifications'
-#			)
-			
-#notify_interface = dbus.Interface(
-#			notify_object,
-#			'org.freedesktop.Notifications'
-#			)
-
 
 class Stream():
 	def __init__( self, parent, param_artwork, progressBar,
@@ -89,7 +75,7 @@ class Stream():
 		except:
 			print "Formato de pista incorrecto"
 		
-		self.loadArtwork( DATA = File( fileresources )	)
+		self.loadArtwork( DATA = File( fileresources ))
 		
 		duration = audio.info.length
 		fileLen = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
@@ -103,45 +89,10 @@ class Stream():
 		
 		model, treeiter = select.get_selected(	)
 		
-#		notify_id = notify_interface.Notify(
-#				"DBus Test",
-#				 0,
-#				 "",
-#				 model[treeiter][0],
-#				 "por "+model[treeiter][2]+" de "+model[treeiter][1],
-#				 "",
-#				 { },
-#				 100
-#			)
 		
 		self.player.set_property( "uri", "file://"+fileresources )		
 		self.player.set_state( gst.STATE_PLAYING )
-		return duration
-
-	def on_message(self, bus, message):
-		t = message.type 
-		if t == gst.MESSAGE_EOS: 
-			self.player.set_state( gst.STATE_NULL )
-			self.next_state(  )
-		elif t == gst.MESSAGE_ERROR:
-			self.player.set_state( gst.STATE_NULL )
-			err, debug = message.parse_error(  )
-			print "Error: %s" % err, debug
-			self.StatusBar.push(
-						self.StatusBar.get_context_id( "Error" ),
-						"Error: somethig went wrong"
-					)
-    
-	def on_sync_message(self, bus, message):
-		if message.structure is None:
-			return
-		message_name = message.structure.get_name(  )
-		if message_name == "prepare-xwindow-id":
-			imagesink = message.src
-			imagesink.set_property( "force-aspect-ratio", True )
-			Gdk.threads_enter(  )
-			imagesink.set_xwindow_id( self.__parent__.movie_window.window.xid )
-			Gdk.threads_leave(  )                                                       
+		return duration                              
 
 	def play_state(self):
 		if self.controler == 1:
@@ -240,7 +191,7 @@ class Stream():
 			print "No se puede cargar la imagen"
 						
 	def UpdateMetaData(self, metaData, time):
-		self.Artist.set_text	( metaData.getArtist(	) )
+		self.Artist.set_text( metaData.getArtist(	) )
 		self.Album.set_text	( metaData.getAlbum(	) )
 		self.Duration.set_text	( "%.2f" % time + "  min" )
 		self.Title.set_text	( metaData.getTitle(	) )

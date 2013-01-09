@@ -132,7 +132,7 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
 ##################################################################################
 
 DistUtilsExtra.auto.setup(
-    name='Glmplayer',
+    name='glmplayer',
     version='2.0',
     license='GPL-3',
     author='William Parras',

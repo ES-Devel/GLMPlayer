@@ -26,7 +26,7 @@ __all__ = [
 # files). By default, this is ../data, relative your trunk layout
 __template_data_directory__ = '../data/'
 __license__ = 'GPL-3'
-__version__ = '1.0'
+__version__ = '2.0'
 
 import os
 
@@ -49,8 +49,8 @@ def get_data_file(*path_segments):
 def get_data_path():
     """Retrieve template data path
 
-    This path is by default <template_lib_path>/../data/ in trunk
-    and /usr/share/template in an installed version but this path
+    This path is by default <glmplayer_lib_path>/../data/ in trunk
+    and /usr/share/glmplayer in an installed version but this path
     is specified at installation time.
     """
 
@@ -59,8 +59,8 @@ def get_data_path():
         os.path.dirname(__file__), __template_data_directory__)
 
     abs_data_path = os.path.abspath(path)
-    if not os.path.exists(abs_data_path):
-        raise project_path_not_found
+    #if not os.path.exists(abs_data_path):
+        #raise project_path_not_found
 
     return abs_data_path
 

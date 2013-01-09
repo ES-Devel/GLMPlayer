@@ -27,14 +27,9 @@ class ConfigManager( ):
         self.path = ""
         
     def setConfigFile( self, filePath):
-        # cargamos archivo de configuracion
-        # se verifica la relatividad de los directorios
-        try: 
-            self.path = "/usr/local/share/Glmplayer/config/"+filePath
-            self.cfg.read([self.path]) 
-        except:
-            self.path = "data/config/"+filePath 
-            self.cfg.read([self.path])
+        # cargamos archivo de configuracion 
+        self.path = filePath
+        self.cfg.read([self.path]) 
 
     def LoadSettings( self ):
         try:

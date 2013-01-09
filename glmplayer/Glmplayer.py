@@ -13,12 +13,12 @@
 # You should have received a copy of the GNU General Public License along 
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
-	
-from gi.repository import Gtk,GdkPixbuf, GLib 
 
 from glmplayer import window,importWindow,about,edit,mediaList 
 
-from glmplayer_lib import playbin, resources, settings
+from glmplayer_lib import playbin, resources, settings, glmplayerconfig
+
+from gi.repository import Gtk,GdkPixbuf, GLib 
 
 import subprocess 
 
@@ -26,70 +26,60 @@ import threading
 
 import time
 
+
 GLib.threads_init()
     
 class main:
 
 	def __init__(self):
 		
-		# define algunas constantes del entorno
-		self.Storage = "track.xml" # xml playlist
-		self.img = "artwork.png" # arte del album
-		self.Noimg = "NOCD.png" # imagen en caso de no econtrar el arte
+		# env vars 
 		self.isPaused = False
 		self.__numErrors__ = 0
 		self.__errorLog__ = []
 		
-		# manejador de configuracion
-		# posteriormente se indica la ruta del archivo
-		# para mas detalles de como esta clase trabaja 
-		# ver el archivo $[PROJEC_ROOT_DIRECTORY]/glmplayer_lib/settings.py
+		# config handler
+		# see glmplayer_lib/settings.py for more details about how this class works
 		self.configManager = settings.ConfigManager( self ) 
-		self.configManager.setConfigFile( "glmplayer.cfg" ) 
+		self.configManager.setConfigFile( glmplayerconfig.get_data_path()+"/config/glmplayer.cfg" ) 
 		
 		# Gtk.Builder
-		self.__builder = Gtk.Builder()
-		try:
-		    self.__builder.add_from_file("data/ui/glmplayer.glade")
-		except:
-		    self.__builder.add_from_file("/usr/local/share/Glmplayer/ui/glmplayer.glade")
-		  
-		# inicializa la ventana principal
-		# para mas detalles de como esta clase trabaja
-		# ver el archivo $[PROJEC_ROOT_DIRECTORY]/glmplayer/Glmplayer.py 
-		self.__window = window.Glmplayer( self, self.__builder )	
+		self.__builder = Gtk.Builder( )
+		self.__builder.add_from_file( glmplayerconfig.get_data_path()+"/ui/glmplayer.glade" )
+		
+		# see glmplayer_lib/resources.py for more details about resources.objects
+		# self.child are Gtk.Objects  
+		# see glmplayer/window.py for more details about how this class works 
+		self.__window = window.Glmplayer( self, self.__builder )
 		self.child = self.__window.Start( "ventana_principal", resources.objects )
+		self.__window.getInstance( ).maximize( )
+		
+		# see glmplayer/importWindow.py for more details about how this class works  
+		self.importFiles = importWindow.importWindow( self.__builder, self, glmplayerconfig.get_data_path()+"/config/track.xml" )
+		
+		# see glmplayer/about.py for more details about how this class works
+		self.about = about.aboutWindow( self.__builder, self )	
+		
+		# see glmplayer/edit.py for more details about how this class works
+		self.edit = edit.editWindow( self.__builder, self, self.child["arbol_pistas"] )
+		
 		self.child["tiempo"].set_text("00:00")
 		
 		self.initUpdate( )
-		self.__window.getInstance( ).maximize( ) # maximiza la ventana
 		
-		# crea una instancia para la ventana agregar archivos
-		# para mas detalles de como esta clase trabaja
-		# ver el archivo $[PROJEC_ROOT_DIRECTORY]/glmplayer/importWindow.py  
-		self.importFiles = importWindow.importWindow( self.__builder, self, self.Storage )
-		# crea una instancia para la ventana acerca de
-		# para mas detalles de como esta clase trabaja
-		# ver el archivo $[PROJEC_ROOT_DIRECTORY]/glmplayer/about.py
-		self.about = about.aboutWindow( self.__builder, self )
+	    self.configManager.LoadSettings( )
 		
-		self.configManager.LoadSettings( )
+		self.LoadChildWindows( )
 		
-		self.edit = edit.editWindow( self.__builder, self, self.child["arbol_pistas"] )
-		
-		self.LoadChildWindows( ) # carga los hijos en la ventana
-		
-		# inicia control de reproduccion con todos sus
-		# Elementos asociados
-		# para mas detalles de como esta clase trabaja
-		# ver el archivo $[PROJEC_ROOT_DIRECTORY]/glmplayer_lib/plugins/playbin.py
+		# playbin handler
+		# see glmplayer_lib/playbin.py for more details about how this class works
 		self.gst_builder = playbin.Stream(
 					self,
 					self.child["caratula"],
 					self.child["tiempo"],
 					self.child["arbol_pistas"],
-					self.img,
-					self.Noimg,
+					glmplayerconfig.get_data_path()+"/ui/artwork.png",
+					glmplayerconfig.get_data_path()+"/ui/NOCD.png",
 					self.child["info"],
 					self.child["artista"],
 					self.child["album"],
@@ -97,43 +87,35 @@ class main:
 					self.child["titulo"]
 				)
 				
-        # para mas detalles de como esta clase trabaja
-		# ver el archivo $[PROJEC_ROOT_DIRECTORY]/glmplayer/mediaList.py
+        # see glmplayer/mediaList.py for more details about how this class works
 		self.PlayList = mediaList.MediaList(
 					self,
 					self.child["media"],
 					self.child["arbol_pistas"],
-					self.Storage
-				) # inicia el controlador del playlist
-				
-		self.__numErrors__, self.__errorLog__ = self.PlayList.Search( ) # realiza la busqueda de pistas	
+					glmplayerconfig.get_data_path()+"/config/track.xml"
+				) 
 		
-		try:
-		    self.child["caratula"].set_from_pixbuf(
-			    	GdkPixbuf.Pixbuf.new_from_file_at_size(
-			    			"data/ui/NOCD.png",
-				    		200,
-					    	200
-				    	)
-				    ) # inicializa el elemento que muestra el arte
-		except:
-		    self.child["caratula"].set_from_pixbuf(
-			    	GdkPixbuf.Pixbuf.new_from_file_at_size(
-			    			"/usr/local/share/Glmplayer/ui/NOCD.png",
-				    		200,
-					    	200
-				    	)
-				    ) # inicializa el elemento que muestra el arte
+		# update MediaList		
+		self.__numErrors__, self.__errorLog__ = self.PlayList.Search( )
+		
+		self.child["caratula"].set_from_pixbuf(
+			    GdkPixbuf.Pixbuf.new_from_file_at_size(
+			    		glmplayerconfig.get_data_path()+"/ui/NOCD.png",
+				    	200,
+					    200
+				    )
+				 )
 
 		
 		self.child["info"].push(
 				self.child["info"].get_context_id("load done"),
 				"Done "
-			) # muestra el estado del programa
+			)
 		
-		dict = resources.getSignals( self ) # define los eventos
-		
-		self.__window.getBuilder( ).connect_signals(dict) # conecta los eventos
+		# def event
+		dict = resources.getSignals( self )
+		# init event
+		self.__window.getBuilder( ).connect_signals(dict) 
 		
 		self.child["ErrorLogButton"].set_label("Errores ("+str(self.__numErrors__)+")")
 		
@@ -194,7 +176,6 @@ class main:
 			self.curr2 = self.curr2 + 1
 		if not( self.current < self.len ) and ( self.current != 0 or self.len != 0 ):
 		    self.child["handler"].clicked( )
-		print "final"
 	
 	def initUpdate( self ):
 	    self.flag = False

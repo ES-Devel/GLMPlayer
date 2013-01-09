@@ -41,12 +41,7 @@ class MediaList( ):
 	    __numErrors__ = 0
         __errorLog__ = []
 		tag = eyeD3.Tag	( )
-		try:
-		    dom = minidom.parse( "data/config/"+self.XML )
-		    self.backup = "data/config/"+self.XML
-		except:
-		    dom = minidom.parse( "/usr/local/share/Glmplayer/config/"+self.XML )
-		    self.backup = "/usr/local/share/Glmplayer/config/"+self.XML
+		dom = minidom.parse( self.XML )
 		num = len( dom.getElementsByTagName("pista") )
 		i = 0
 		while i < num:
@@ -101,20 +96,20 @@ class MediaList( ):
 				iterador = modelo.get_iter ( i )
 					
 			treeiter = self.List.remove ( iterador )
-			dom = minidom.parse 		( self.backup )
+			dom = minidom.parse 		( self.XML )
 			found = -1
 			for i in range( 0, len ( dom.getElementsByTagName("track") ) ):
 				if filepath.find( dom.getElementsByTagName("track")[i].firstChild.data ) >= 0:
 					found = i
 			dom.getElementsByTagName("wml")[0].removeChild( dom.getElementsByTagName("pista")[found] )
-			xmldocument = open	( self.backup , "w" )
+			xmldocument = open	( self.XML , "w" )
 			dom.writexml		( xmldocument )
 			xmldocument.close(  )
 		except:
 			pass
 	
 	def clean(self,widget):
-		doc = open	   ( self.backup , "w" )
+		doc = open	   ( self.XML , "w" )
 		doc.write	   ('<?xml version="1.0" ?><wml></wml>')
 		doc.close	   (  )
 		self.List.clear(  )
