@@ -126,14 +126,18 @@ class main:
 		self.statusBar.setText( self.gst_builder.pause_state( ) )
 		
 	def prev(self,widget):
+	    self.det()
 		self.len, st = self.gst_builder.prev_state( )
 		self.statusBar.setText(st)
 		if self.len == None:
 		    self.len = self.prov
 		else:
 		    self.prov = self.len
+		self.threadhandler = threadlib.threadhandler( self, self.len )
+		self.threadhandler.start()
 	
 	def next(self,widget):
+	    self.det()
 	    self.sig( )
 
     def next2(self,widget):

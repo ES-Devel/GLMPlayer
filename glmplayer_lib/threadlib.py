@@ -20,6 +20,8 @@ import time
 
 from gi.repository import Gtk, Gdk
 
+Gdk.threads_init( )
+
 class threadhandler(threading.Thread):
 
     def __init__(self, parent, leng):
@@ -48,7 +50,7 @@ class threadhandler(threading.Thread):
 		    self.current = self.current + 1
 		    self.curr2 = self.curr2 + 1
 	    if not( self.current < self.len ) and ( self.current != 0 or self.len != 0 ):
-	        Gdk.threads_init( )
+	        Gdk.threads_enter()
 	        self.parent.child["handler"].clicked( )
 	        Gdk.threads_leave( )
 	
