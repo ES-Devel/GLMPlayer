@@ -22,6 +22,8 @@ from gi.repository import Gtk,GdkPixbuf, GLib
 
 import subprocess 
 
+import time
+
 GLib.threads_init()
     
 class main:
@@ -65,7 +67,7 @@ class main:
 		
 		self.child["tiempo"].set_text("00:00")
 		
-	    self.configManager.LoadSettings( )
+		self.configManager.LoadSettings( )
 		
 		self.LoadChildWindows( )
 		
@@ -81,6 +83,8 @@ class main:
 		# see glmplayer_lib/playbin.py for more details about how this class works
 		self.gst_builder = playbin.Stream( self, self.child["caratula"], self.child["tiempo"], self.child["arbol_pistas"],
 					self.metadatahandler )
+					
+		self.threadhandler = None
 				
         # see glmplayer/mediaList.py for more details about how this class works
 		self.PlayList = mediaList.MediaList( self, self.child["media"],self.child["arbol_pistas"], self.storageFile ) 
@@ -103,6 +107,8 @@ class main:
 			pass
 	
 	def destroy(self,widget):
+	    if self.threadhandler != None:
+	         self.threadhandler.stopthread()
 		Gtk.main_quit( )	    
 	
 	def play(self):
@@ -112,6 +118,8 @@ class main:
 		    self.len = self.prov
 		else:
 		    self.prov = self.len
+		self.threadhandler = threadlib.threadhandler( self, self.len )
+		self.threadhandler.start()
 	
 	def pause(self):
 	    self.isPaused = True
@@ -130,6 +138,8 @@ class main:
 
     def next2(self,widget):
         # thread handler
+        self.det()
+        time.sleep(1)
 	    self.sig( )
     
 	def stop(self,widget):
@@ -143,9 +153,14 @@ class main:
 		    self.len = self.prov
 		else:
 		    self.prov = self.len
+		self.threadhandler = threadlib.threadhandler( self, self.len )
+		self.threadhandler.start()
 	
 	def det(self):
 		self.statusBar.setText( self.gst_builder.stop_state( ) )
+		if self.threadhandler != None:
+	         self.threadhandler.stopthread()
+	    self.threadhandler = None
 		
 	def verify(self,widget):
 	    if self.child["play"].get_active() == True:
