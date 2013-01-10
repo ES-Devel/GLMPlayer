@@ -74,7 +74,6 @@ class Stream():
 		
 		model, treeiter = select.get_selected(	)
 		
-		
 		self.player.set_property( "uri", "file://"+fileresources )		
 		self.player.set_state( gst.STATE_PLAYING )
 		
@@ -106,7 +105,7 @@ class Stream():
 				self.current = 0
 			self.max = contador
 			
-			return self.core( ), "Now Playing"
+		    return self.core( ), "Now Playing"
 	
 	def next_state(self): 
 		try:	 
@@ -115,7 +114,7 @@ class Stream():
 			iterador = modelo.get_iter( self.MAPA[self.current] )
 			select.select_iter( iterador )
 			self.current = self.current + 1
-			return self.core( )
+			return self.core( ), "Now Playing"
 		except:
 			if self.__parent__.child["repeat"].get_active(  ) == False:
 				self.player.set_state( gst.STATE_NULL ) 
@@ -127,9 +126,10 @@ class Stream():
 				select.select_iter( iterador )
 				self.current = self.current + 1
 				return self.core(  ), "Now Playing"
+		self.controller = 0
 	
 	def prev_state(self):
-		if self.MAPA[self.current] <= 0:
+		if self.MAPA[self.current] < 0:
 			pass
 		else:
 			self.current = self.current - 1	
@@ -138,9 +138,11 @@ class Stream():
 			iterador = modelo.get_iter( self.MAPA[self.current] )
 			select.select_iter(iterador)
 			return self.core( ), "Now Playing"
+		self.controller = 0
 
 	def stop_state(self):	
 		self.player.set_state( gst.STATE_NULL )
+		self.controller = 0
 		return "Stop"
 		
 	def pause_state(self):

@@ -14,15 +14,6 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-def ui( ):
-	return "/usr/local/share/Glmplayer/ui/glmplayer.glade"
-
-def uiPath():
-	return "/usr/local/share/Glmplayer/ui"
-
-def ConfigFiles():
-	return "/usr/local/share/Glmplayer/config/"
-
 def reverse(list):
 	if len(list)==1:
 		return list

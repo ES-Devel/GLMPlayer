@@ -3,6 +3,6 @@ _Name=Glmplayer
 _Comment=Mp3 Player
 Categories=GNOME;AudioVideo;
 Exec=glmplayer
-Icon=/usr/local/share/Glmplayer/media/glmplayer.png
+Icon=/usr/local/share/glmplayer/media/glmplayer.png
 Terminal=false
 Type=Application

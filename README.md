@@ -88,6 +88,41 @@ Desinstalación:
 	
 		cat uninstallGlmplayer | xargs rm -rf
 	
+	revisa el archivo y ten cuidado que no incluya algun nombre como
+	/usr/bin/ eso borraría todos los programas de tu ordenador, cada linea
+	debe terminar sin '/' lo que indica que solo borará un archivo
+		
+el archivo glmplayer.desktop:
+=============================
+	
+	por defecto las configuraciones del menú de gnome se guardan en el 
+	archivo glmplayer.desktop que después de la instalación se ubica 
+	por defecto bajo el directorio /usr/local/share/applications/, la
+	ruta completa sería  /usr/local/share/applications/glmplayer.desktop.
+	para editar este archivo debes tener permisos de superusuario y abrirlo
+	con tu editor favorito. El contenido del archivo por defecto es el siguiente:
+	
+		[Desktop Entry]
+		_Name=Glmplayer
+		_Comment=Mp3 Player
+		Categories=GNOME;AudioVideo;
+		Exec=glmplayer
+		Icon=/usr/local/share/glmplayer/media/glmplayer.png
+		Terminal=false
+		Type=Application
+		
+	_Name indica el nombre a mostrar en el menú,
+	_Comment es el comentario que se muestra al pasar el ratón sobre la entrada del menú
+	Categories es la ubicación del programa en el menú según la especificación de gnome
+	Exec el nombre del programa
+	Icon es la ubicación del icono que se muestra junto al nombre del programa en el menú
+	Terminal indica si necesita ejecutarse en un terminal
+	Type el tipo de programa distribuido
+	
+	* Puedes modificar estos parametros para realizar acciones como cambiar de categoría el
+	programa o modificar el icono del menu. Agrandar la descripción, o cambiar el nombre del 
+	programa a mostrar en el menú 
+	
 ========================================================================
 ========================================================================
 si tiene alguna duda o desea alguna informacion contactar a: 
