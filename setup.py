@@ -140,6 +140,7 @@ DistUtilsExtra.auto.setup(
     description='Mp3 Player',
     long_description='light and powerful',
     url='https://launchpad.net/glmplayer',
+    data_files=[ ('/usr/bin', ['bin/glmplayer']),],
     cmdclass={'install': InstallAndUpdateDataDirectory}
     )
 
