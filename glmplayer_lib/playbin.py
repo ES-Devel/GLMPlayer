@@ -160,6 +160,6 @@ class Stream():
 		except:
 			CHOOSEN = self.resourcesNoImg
 		try:	
-			self.tmp_artwork.set_from_pixbuf( GdkPixbuf.Pixbuf.new_from_file_at_size( CHOOSEN, 200, 200 ) )
+			self.tmp_artwork.set_from_pixbuf( GdkPixbuf.Pixbuf.new_from_file_at_size( CHOOSEN, 50, 50 ) )
 		except:
 			print "No se puede cargar la imagen"

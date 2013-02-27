@@ -99,9 +99,11 @@ apoyo en cada paso de este proyecto. </property>
             <child>
               <object class="GtkButton" id="close_about">
                 <property name="label">gtk-close</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <property name="image_position">top</property>
                 <signal name="clicked" handler="on_close_about_clicked" swapped="no"/>
@@ -144,10 +146,12 @@ apoyo en cada paso de este proyecto. </property>
             <child>
               <object class="GtkButton" id="brir">
                 <property name="label">gtk-open</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -159,10 +163,12 @@ apoyo en cada paso de este proyecto. </property>
             <child>
               <object class="GtkButton" id="cancelar">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -366,9 +372,11 @@ apoyo en cada paso de este proyecto. </property>
             <child>
               <object class="GtkButton" id="ok_edit">
                 <property name="label">gtk-ok</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_ok_edit_clicked" swapped="no"/>
               </object>
@@ -381,9 +389,11 @@ apoyo en cada paso de este proyecto. </property>
             <child>
               <object class="GtkButton" id="cancel_edit">
                 <property name="label">gtk-cancel</property>
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
                 <signal name="clicked" handler="on_cancel_edit_clicked" swapped="no"/>
               </object>
@@ -508,6 +518,7 @@ cuadro de resumen de la pista al reproducirla.</property>
             <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="archivo_opt">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Archivo</property>
@@ -519,6 +530,7 @@ cuadro de resumen de la pista al reproducirla.</property>
                     <child>
                       <object class="GtkImageMenuItem" id="agregar">
                         <property name="label">gtk-add</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -536,6 +548,7 @@ cuadro de resumen de la pista al reproducirla.</property>
                     <child>
                       <object class="GtkImageMenuItem" id="salir">
                         <property name="label">gtk-quit</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -550,6 +563,7 @@ cuadro de resumen de la pista al reproducirla.</property>
             </child>
             <child>
               <object class="GtkMenuItem" id="ayuda">
+                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Ay_uda</property>
@@ -561,6 +575,7 @@ cuadro de resumen de la pista al reproducirla.</property>
                     <child>
                       <object class="GtkImageMenuItem" id="ayud">
                         <property name="label">gtk-about</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -592,8 +607,10 @@ cuadro de resumen de la pista al reproducirla.</property>
                 <property name="toolbar_style">both</property>
                 <child>
                   <object class="GtkToolButton" id="prev">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Anterior</property>
                     <property name="stock_id">gtk-media-previous</property>
                     <signal name="clicked" handler="on_prev_clicked" swapped="no"/>
@@ -605,8 +622,10 @@ cuadro de resumen de la pista al reproducirla.</property>
                 </child>
                 <child>
                   <object class="GtkToggleToolButton" id="play">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Reproducir</property>
                     <property name="stock_id">gtk-media-play</property>
                     <signal name="toggled" handler="on_play_toggled" swapped="no"/>
@@ -618,8 +637,10 @@ cuadro de resumen de la pista al reproducirla.</property>
                 </child>
                 <child>
                   <object class="GtkToolButton" id="next">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Siguiente</property>
                     <property name="stock_id">gtk-media-next</property>
                     <signal name="clicked" handler="on_next_clicked" swapped="no"/>
@@ -630,22 +651,11 @@ cuadro de resumen de la pista al reproducirla.</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="stop">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Detener</property>
-                    <property name="stock_id">gtk-media-stop</property>
-                    <signal name="clicked" handler="on_stop_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkToggleToolButton" id="random">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Aleatorio</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">random_icon</property>
@@ -658,8 +668,10 @@ cuadro de resumen de la pista al reproducirla.</property>
                 </child>
                 <child>
                   <object class="GtkToggleToolButton" id="repeat">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Repetir</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">repeat_icon</property>
@@ -682,16 +694,20 @@ cuadro de resumen de la pista al reproducirla.</property>
                 </child>
                 <child>
                   <object class="GtkToolItem" id="toolbutton6">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="visible_horizontal">False</property>
                     <property name="visible_vertical">False</property>
                     <child>
                       <object class="GtkButton" id="handler">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="on_handler_clicked" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="icon">
@@ -709,27 +725,18 @@ cuadro de resumen de la pista al reproducirla.</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="about_tool">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Acerca de</property>
-                    <property name="stock_id">gtk-about</property>
-                    <signal name="clicked" handler="on_about_tool_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkToolItem" id="toolbutton4">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <child>
                       <object class="GtkVolumeButton" id="volumen">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="relief">none</property>
                         <property name="focus_on_click">False</property>
                         <property name="adjustment">adjustment1</property>
@@ -738,6 +745,78 @@ audio-volume-high
 audio-volume-low
 audio-volume-medium</property>
                         <signal name="value-changed" handler="on_volumen_value_changed" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolItem" id="toolbutton8">
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
+                    <child>
+                      <object class="GtkButton" id="button1">
+                        <property name="use_action_appearance">False</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
+                        <child>
+                          <object class="GtkImage" id="caratula">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="pixbuf">NOCD.png</property>
+                            <property name="icon-size">6</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolItem" id="toolbutton5">
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
+                    <child>
+                      <object class="GtkHScale" id="bar">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="adjustment">adjustment2</property>
+                        <property name="lower_stepper_sensitivity">off</property>
+                        <property name="upper_stepper_sensitivity">off</property>
+                        <property name="show_fill_level">True</property>
+                        <property name="draw_value">False</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolItem" id="toolbutton7">
+                    <property name="use_action_appearance">False</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
+                    <child>
+                      <object class="GtkLabel" id="tiempo">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">label</property>
                       </object>
                     </child>
                   </object>
@@ -783,8 +862,10 @@ audio-volume-medium</property>
                 <property name="toolbar_style">both</property>
                 <child>
                   <object class="GtkToolButton" id="AbrirB">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Importar</property>
                     <property name="stock_id">gtk-add</property>
                     <signal name="clicked" handler="on_AbrirB_clicked" swapped="no"/>
@@ -806,8 +887,10 @@ audio-volume-medium</property>
                 </child>
                 <child>
                   <object class="GtkToolButton" id="delete">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Quitar</property>
                     <property name="stock_id">gtk-remove</property>
                     <signal name="clicked" handler="on_delete_clicked" swapped="no"/>
@@ -829,8 +912,10 @@ audio-volume-medium</property>
                 </child>
                 <child>
                   <object class="GtkToolButton" id="editar">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Editar</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-edit</property>
@@ -853,8 +938,10 @@ audio-volume-medium</property>
                 </child>
                 <child>
                   <object class="GtkToolButton" id="clean">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">Limpiar</property>
                     <property name="stock_id">gtk-clear</property>
                     <signal name="clicked" handler="on_clean_clicked" swapped="no"/>
@@ -866,8 +953,10 @@ audio-volume-medium</property>
                 </child>
                 <child>
                   <object class="GtkToolButton" id="ErrorLogButton">
+                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="is_important">True</property>
                     <property name="label" translatable="yes">Errores (0)</property>
                     <property name="use_underline">True</property>
@@ -973,67 +1062,38 @@ audio-volume-medium</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkBox" id="box1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkHScale" id="bar">
-                        <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can_focus">True</property>
-                        <property name="adjustment">adjustment2</property>
-                        <property name="lower_stepper_sensitivity">off</property>
-                        <property name="upper_stepper_sensitivity">off</property>
-                        <property name="show_fill_level">True</property>
-                        <property name="draw_value">False</property>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="tiempo">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">label</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkHBox" id="searchBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkButton" id="button1">
+                      <object class="GtkBox" id="box2">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkImage" id="caratula">
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="box1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixbuf">NOCD.png</property>
-                            <property name="icon-size">6</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
                           </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="padding">5</property>
                         <property name="position">0</property>
                       </packing>
                     </child>

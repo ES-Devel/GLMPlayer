@@ -92,7 +92,7 @@ class main:
 		# update MediaList		
 		self.__numErrors__, self.__errorLog__ = self.PlayList.Search( )
 		
-		self.child["caratula"].set_from_pixbuf( GdkPixbuf.Pixbuf.new_from_file_at_size( self.noArtworkFile, 50, 50 ) )
+		self.child["caratula"].set_from_pixbuf( GdkPixbuf.Pixbuf.new_from_file_at_size( self.noArtworkFile, 200, 200 ) )
 
 		dict = resources.getSignals( self )
 		self.__window.getBuilder( ).connect_signals(dict)
