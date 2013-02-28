@@ -19,6 +19,7 @@
 
 import os
 import sys
+import stat
 
 try:
     import DistUtilsExtra.auto
@@ -125,6 +126,9 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
         desktop_file = move_desktop_file(self.root, target_data, self.prefix)
         update_desktop_file(desktop_file, target_pkgdata, target_scripts)
         compile_schemas(self.root, target_data)
+        os.chmod(target_pkgdata+'config/glmplayer.cfg',0777)
+        os.chmod(target_pkgdata+'config/track.xml',0777)
+        os.chmod('/usr/bin/glmplayer',0777)
 
         
 ##################################################################################
