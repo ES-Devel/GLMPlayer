@@ -1,26 +1,13 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
-### BEGIN LICENSE
-# Copyright (C) 2012 <William Parras> <william.parras.mendez@gmail.com>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
-# by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
-# PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
-# with this program.  If not, see <http://www.gnu.org/licenses/>.
-### END LICENSE
-
 def reverse(list):
+    'reverse string'
 	if len(list)==1:
 		return list
 	else:
 		return list[-1]+reverse(list[:-1])  
 
 def on_tree_selection_changed(selection):
+    'clean paths'
 	model, treeiter = selection.get_selected()
 	if treeiter != None:
 		palabra = "" 
@@ -62,9 +49,11 @@ def on_tree_selection_changed(selection):
 					nueva = nueva+letra
 					contador = contador+1			 
 		palabra = reverse(nueva)
+		'return clean path'
 		return palabra 	
 
 def clearing(array):
+    'clean path'
 	palabra = ""
 	contador = 0
 	for letra in array:
@@ -88,6 +77,7 @@ def clearing(array):
 	return palabra 
 
 def cleanNode(i):
+    'clean tree node, example: (0) turns into 0'
 	for token in i:
 		if token == '(' or token == ' ' or token == ',' or token == ')':
 			pass
@@ -95,10 +85,12 @@ def cleanNode(i):
 			return token
 	
 def getSignals( pointer ):
+        'create dict with signals'
 		return {"on_agregar_activate": pointer.importFiles.OpenDialog,
 		"gtk_main_quit":pointer.destroy,
 		"on_delete_clicked":pointer.PlayList.delete,
 		"on_play_toggled":pointer.verify,
+		"on_arbol_pistas_row_activated":pointer.active_row,
 		"on_random_toggled":pointer.configManager.random,
 		"on_repeat_toggled":pointer.configManager.repeat,
 		"on_prev_clicked":pointer.prev,

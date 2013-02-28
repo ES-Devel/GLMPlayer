@@ -1,18 +1,4 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
-### BEGIN LICENSE
-# Copyright (C) 2012 <William Parras> <william.parras.mendez@gmail.com>
-# This program is free software: you can redistribute it and/or modify it 
-# under the terms of the GNU General Public License version 3, as published 
-# by the Free Software Foundation.
-# 
-# This program is distributed in the hope that it will be useful, but 
-# WITHOUT ANY WARRANTY; without even the implied warranties of 
-# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
-# PURPOSE.  See the GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License along 
-# with this program.  If not, see <http://www.gfrom gi.repository import Gtknu.org/licenses/>.
-### END LICENSE
 
 from gi.repository import Gtk,GdkPixbuf,Gdk 
 
@@ -47,6 +33,7 @@ class Stream():
 			self.resourcesNoImg = glmplayerconfig.get_data_path()+"/ui/NOCD.png"
 			self.metadatahandler = metadatahandler
 			
+			'allow user to use mediaList using or not using random method'
 			self.MAPA = [] 
 			self.current = 0
 			self.controler = 0
@@ -54,57 +41,70 @@ class Stream():
 			self.time_song = 0
         
 	def core(self):
+	    'every time core is called stop every activity'
 		self.stop_state( )
+		'gets tree selection'
 		select = self.Tree.get_selection(	)
+		'clear path'
 		fileresources = resources.on_tree_selection_changed( select	)
-		
 		try:
 			tag = eyeD3.Tag	( )
 			audio = MP3	( fileresources )
 			tag.link	( fileresources )
+			duration = audio.info.length
+		    fileLen = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
 		except:
-			print "Formato de pista incorrecto"
-		
+		    duration = 0
+		    fileLen = 0
+		    tag = None
+			print "glmplayer 0.1 only supports MP3"
+		'load artwork using tree selection path'
 		self.loadArtwork( DATA = File( fileresources ))
-		
-		duration = audio.info.length
-		fileLen = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
-		
+		'uptade gui with metadata info'
 		self.metadatahandler.UpdateMetaData( metaData = tag, time = fileLen )	
-		
 		model, treeiter = select.get_selected(	)
-		
+		'start playing'
 		self.player.set_property( "uri", "file://"+fileresources )		
-		self.player.set_state( gst.STATE_PLAYING )
-		
+		self.player.set_state( gst.STATE_PLAYING )	
+		'return file length'
 		return duration                              
 
 	def play_state(self):
+	    'check if paused'
 		if self.controler == 1:
+		    'yeah! is paused, lets play'
 			self.player.set_state( gst.STATE_PLAYING )
 			self.controler = 0
 		else:
+		    'if not paused, well we will make a sort'
+		    'get tree selection'
 			select = self.Tree.get_selection( )
 			( modelo , filas ) = select.get_selected_rows( )
 			contador = 0
 			val = 0
 			node = " "
 			for i in filas:
+			    'this will get a number pointing to selected row'
 				val = int( resources.cleanNode ( i ) )
 				iterador = modelo.get_iter( 0 )
+				'now we will count how many songs are listed'
 				while iterador != None:
 					iterador = modelo.iter_next( iterador )
 					contador = contador + 1
+				'we got it'
 				contador
+			'if random is false'
 			if self.__parent__.child["random"].get_active( ) == False:
-				self.MAPA = range(val,contador)
-				self.current = 1
+			    'list values for playlist'
+				self.MAPA = range(0,contador)
+				self.current = val
 			else:
-				self.MAPA = range	( 0 ,contador )
-				random.shuffle		( self.MAPA )
+			    'make the same but shuffle'
+				self.MAPA = range( 0 ,contador )
+				random.shuffle	 ( self.MAPA )
 				self.current = 0
+			'max value'
 			self.max = contador
-			
 		    return self.core( ), "Now Playing"
 	
 	def next_state(self): 
@@ -140,12 +140,14 @@ class Stream():
 			return self.core( ), "Now Playing"
 		self.controller = 0
 
-	def stop_state(self):	
+	def stop_state(self):
+	    'send null to pipeline'	
 		self.player.set_state( gst.STATE_NULL )
 		self.controller = 0
 		return "Stop"
 		
 	def pause_state(self):
+	    'pause current song'
 		self.player.set_state( gst.STATE_PAUSED )	
 		self.controler = 1
 		return "Paused"
@@ -153,11 +155,15 @@ class Stream():
 	def loadArtwork(self, DATA):
 		CHOOSEN = None
 		try:
-			artwork = DATA.tags['APIC:'].data 
+		    'read APIC frames'
+			artwork = DATA.tags['APIC:'].data
+			'use frames to create artwork' 
 			with open( self.resourcesImg, 'wb' ) as img:
 				img.write( artwork )
+			'choose artwork'
 			CHOOSEN = self.resourcesImg
 		except:
+		    'if not APIC frames use default image'
 			CHOOSEN = self.resourcesNoImg
 		try:	
 			self.tmp_artwork.set_from_pixbuf( GdkPixbuf.Pixbuf.new_from_file_at_size( CHOOSEN, 50, 50 ) )
