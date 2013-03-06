@@ -123,6 +123,22 @@ el archivo glmplayer.desktop:
 	programa o modificar el icono del menu. Agrandar la descripción, o cambiar el nombre del 
 	programa a mostrar en el menú 
 	
+Version de python:
+=================
+	Glmplayer funciona correctamente con python2.7, puede cambiar la versión de python del sistema
+	redefiniendo el enlace simbolido /usr/bin/python de la siguiente manera
+		#rm /usr/bin/python
+		#ln -s /usr/bin/python2.7 /usr/bin/python
+	Si no tiene python2.7 instalado puede instalarlo con alguno de los siguiente comandos
+		#apt-get install python2.7
+		#yum install python2.7
+		#pacman -S install python2.7
+	u otros dependiendo de su distribucion.
+	
+	Si desea correr Glmplayer con ~(python>=3) puede realizar una conversion del codigo con la
+	herramienta 2to3, para mas informacion sobre le funcionamiento de la herramienta de conversion
+	2to3 puede visitar el siguiente enlace => http://docs.python.org/2/library/2to3.html  
+	
 ========================================================================
 ========================================================================
 si tiene alguna duda o desea alguna informacion contactar a: 

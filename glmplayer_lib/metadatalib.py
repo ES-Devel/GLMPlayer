@@ -13,13 +13,19 @@ class metadataMp3( ):
         stime = "%.2f" % time + "  min"
         title = ''
         try:
-		    artist = metaData.getArtist( )
+            try:
+		        artist = metaData.getArtist( )
+		        album =  metaData.getAlbum(	)
+		        title = metaData.getTitle(	) 
+		    except:
+		        artist = metaData.artist
+		        album =  metaData.album
+		        title = metaData.title
+		        
 		    if artist == '' or artist == ' ':
 		        artist = 'Desconocido'
-            album =  metaData.getAlbum(	)
             if album == '' or album == ' ':
 		        album = 'Desconocido'
-            title = metaData.getTitle(	) 
             if title == '' or title == ' ':
 		        title = 'Desconocido'   
         except:

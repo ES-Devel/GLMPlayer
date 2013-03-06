@@ -15,10 +15,13 @@ try:
 
 	from mutagen.id3 import ID3, APIC, error
 	
-	import eyeD3
-	
 except ImportError:
 	pass 
+	
+try:
+    import eyeD3
+except:
+    import eyed3 as eyeD3
 
 class Stream():
 	def __init__( self, parent, param_artwork, progressBar, MediaTree, metadatahandler ):
@@ -48,9 +51,13 @@ class Stream():
 		'clear path'
 		fileresources = resources.on_tree_selection_changed( select	)
 		try:
-			tag = eyeD3.Tag	( )
+			try:
+		    	    audiofile =  eyeD3.load(fileresources)
+		    	    tag = audiofile.tag
+		    except:
+		    	    tag =  eyeD3.Tag()
+		    	    tag.link(fileresources) 
 			audio = MP3	( fileresources )
-			tag.link	( fileresources )
 			duration = audio.info.length
 		    fileLen = int(duration/60) + float(int((float(duration/60) - int(duration/60))*60))/100
 		except:

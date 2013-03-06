@@ -22,10 +22,6 @@ class main:
 		self.len = 0
 		'aux file lenght storage'
 		self.prov = 0
-		'errors ocurred'
-		self.__numErrors__ = 0
-		'error description'
-		self.__errorLog__ = []
 		'path to xml database'
 		self.storageFile = glmplayerconfig.get_data_path()+"/config/track.xml"
 		'path to ui'
@@ -54,9 +50,6 @@ class main:
 		# see glmplayer/about.py for more details about how this class works
 		'this class wraps about dialog content and methods'
 		self.about = about.aboutWindow( self.__builder, self )	
-		# see glmplayer/edit.py for more details about how this class works
-		'this class manages metadata edition - needs a Gtk.Treewiev'
-		self.edit = edit.editWindow( self.__builder, self, self.child["arbol_pistas"] )
 		'load last settings'
 		self.configManager.LoadSettings( )
 		'load objects instances'
@@ -82,7 +75,11 @@ class main:
         # see glmplayer/mediaList.py for more details about how this class works
 		self.PlayList = mediaList.MediaList( self, self.child["media"],self.child["arbol_pistas"], self.storageFile ) 
 		'load data from xml - count errors on load (example: missing files)'		
-		self.__numErrors__, self.__errorLog__ = self.PlayList.Search( )
+		self.PlayList.Search( )
+		# see glmplayer/edit.py for more details about how this class works
+		'this class manages metadata edition - needs a Gtk.Treewiev'
+		self.edit = edit.editWindow(self.__builder,self,self.child["arbol_pistas"],self.PlayList)
+		self.edit.Start("edit")
         'create dictionaty with Gtk events'
 		dict = resources.getSignals( self )
 		'connect events with main Window'
@@ -185,14 +182,12 @@ class main:
 	    'load secondary windows'
 		self.importFiles.Start("Add")
 		self.about.Start("About")
-		self.edit.Start("edit")
 	        
 	def finishInitProc(self):
 	    'last step at init process'
 	    self.child["caratula"].set_from_pixbuf( GdkPixbuf.Pixbuf.new_from_file_at_size( self.noArtworkFile, 50, 50 ) )
 	    self.child["tiempo"].set_text("00:00")
-	    self.statusBar.setText("Done") 
-		self.child["ErrorLogButton"].set_label("Errores ("+str(self.__numErrors__)+")")    
+	    self.statusBar.setText("Done")    
 		
 	def active_row(self,p1,p2,p3):
 	    'this will play a song using on-key-press event'
